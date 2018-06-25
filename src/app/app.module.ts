@@ -28,14 +28,15 @@ import { AppComponent } from './app.component';
 import { TeacherNamePipe } from './models/teacher-name.pipe';
 import { FkFilterComponent } from './fk-filter/fk-filter.component';
 import { LoadComponent } from './load/load.component';
-
+import { GetNamePipe } from './models/get-name.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoadComponent,
     FkFilterComponent,
-    TeacherNamePipe
+    TeacherNamePipe,
+    GetNamePipe
   ],
   imports: [
     BrowserModule,

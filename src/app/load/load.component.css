@@ -85,6 +85,10 @@ th div{
   max-width: 450px !important;
 }
 
+.teacher-column {
+  width: 15%;
+}
+
 .teacher-column > div{
   display: inline-block;
 }

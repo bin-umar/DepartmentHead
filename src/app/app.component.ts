@@ -25,6 +25,8 @@ export class AppComponent implements OnDestroy {
   type: Type<LoadComponent>;
   cmpRef: ComponentRef<LoadComponent>;
 
+  loadComponent = LoadComponent;
+
   constructor (private componentFactoryResolver: ComponentFactoryResolver,
                private auth: AuthService) {
 
@@ -44,6 +46,11 @@ export class AppComponent implements OnDestroy {
       this.auth.checkUserSession(user).subscribe(response => {
         if (!response) {
           window.location.replace('./error.html');
+        } else {
+          this.auth.getUserKafedra(user.userId).subscribe(resp => {
+            console.log(resp);
+          });
+          this.createComponentDynamically(this.loadComponent);
         }
       });
     } else {
