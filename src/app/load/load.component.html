@@ -1,0 +1,100 @@
+<app-fk-filter (OnChooseKafedra)="getKafedrasLoadById($event);"></app-fk-filter>
+
+<mat-card class="mat-elevation-z8">
+  <div class="text-center">
+    <h3>Сарборӣ</h3>
+    <h6>
+      барои кафедраи "{{ kafedra.fullName | getName:'tj' }}" - и "{{ faculty.fullName }}"
+    </h6>
+  </div>
+</mat-card>
+<div>
+  <table id="table">
+    <tr class="header-load-table">
+      <th>№</th>
+      <th>
+        Номгӯи фанн
+      </th>
+      <th>
+        Курс
+      </th>
+      <th>
+        Семестр
+        <!--<mat-icon matTooltip="Семестр">pie_chart</mat-icon>-->
+      </th>
+      <th>
+        Гурӯҳ
+      </th>
+      <th>
+        Дараҷаи таҳсил
+      </th>
+      <th>
+        Шакли таҳсил
+      </th>
+      <th>
+        <mat-icon matTooltip="Шумораи донишҷӯён">group</mat-icon>
+      </th>
+      <th>
+        Намуд
+      </th>
+      <th>
+        Соат
+      </th>
+      <th>
+        Омӯзгор
+      </th>
+    </tr>
+    <ng-template ngFor let-i="index" let-id [ngForOf]="arrExSubjects">
+      <ng-template ngFor let-j="index" let-subject [ngForOf]="findSubjects(id)">
+        <tr>
+          <ng-template [ngIf]="j === 0">
+            <td [attr.rowspan]="findSubjects(id).length">{{ i + 1 }}</td>
+            <td class="text-left" style="padding-left: 10px;"
+                [attr.rowspan]="findSubjects(id).length">
+              {{ subject.subjectName }}
+            </td>
+            <td [attr.rowspan]="findSubjects(id).length">{{ subject.course }}</td>
+            <td [attr.rowspan]="findSubjects(id).length">{{ subject.term }}</td>
+            <td [attr.rowspan]="findSubjects(id).length">{{ subject.group }}</td>
+            <td [attr.rowspan]="findSubjects(id).length">{{ subject.degree }}</td>
+            <td [attr.rowspan]="findSubjects(id).length">{{ subject.type }}</td>
+            <td [attr.rowspan]="findSubjects(id).length">{{ subject.studentsAmount }}</td>
+          </ng-template>
+
+          <td>{{ subject.section }}</td>
+          <td>{{ subject.hour }}</td>
+          <td class="teacher-column">
+            <ng-template [ngIf]="subject.idTeacher !== ''">
+              <div class="toogle" matTooltip="{{subject.idTeacher}}">{{ subject.idTeacher | teacherName }}</div>
+              <div style="float: right;">
+                <mat-icon class="md-18"
+                          *ngIf="subject.isTeacherSaved === true"
+                          (click)="deleteTeacherId(+subject.id);">delete
+                </mat-icon>
+
+                <mat-icon class="md-18"
+                          *ngIf="subject.isTeacherSaved === false"
+                          (click)="connectTeacherWithSubject(subject.idTeacher, +subject.id)">save
+                </mat-icon>
+              </div>
+            </ng-template>
+
+            <mat-select *ngIf="subject.idTeacher === ''"
+                        [(value)]="subject.idTeacher"
+                        placeholder="Интихоб намоед"
+                        panelClass="custom-select-panel">
+              <mat-option *ngFor="let teacher of teachers" value="{{teacher.Fio}}">
+                {{ teacher.Fio + ' ' +  teacher.Post  }}
+              </mat-option>
+            </mat-select>
+          </td>
+        </tr>
+      </ng-template>
+    </ng-template>
+    <!--<tr>-->
+      <!--<th *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13-->
+              <!--,14,15,16,17,18,19,20,21,22,23,24,25]">{{i}}</th>-->
+      <!--<th *ngIf="Curriculum.locked === 0">26</th>-->
+    <!--</tr>-->
+  </table>
+</div>
