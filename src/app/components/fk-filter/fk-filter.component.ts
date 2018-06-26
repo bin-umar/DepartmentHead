@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { LoadService } from '../services/load.service';
-import { Faculty, Kafedra } from '../models/common';
+import { LoadService } from '../../services/load.service';
+import { Faculty, Kafedra } from '../../models/common';
 
 @Component({
   selector: 'app-fk-filter',

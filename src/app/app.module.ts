@@ -26,9 +26,10 @@ import { AuthService } from './services/auth.service';
 
 import { AppComponent } from './app.component';
 import { TeacherNamePipe } from './models/teacher-name.pipe';
-import { FkFilterComponent } from './fk-filter/fk-filter.component';
-import { LoadComponent } from './load/load.component';
+import { FkFilterComponent } from './components/fk-filter/fk-filter.component';
+import { LoadComponent } from './components/load/load.component';
 import { GetNamePipe } from './models/get-name.pipe';
+import { TeacherLoadComponent } from './components/teacher-load/teacher-load.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { GetNamePipe } from './models/get-name.pipe';
     LoadComponent,
     FkFilterComponent,
     TeacherNamePipe,
-    GetNamePipe
+    GetNamePipe,
+    TeacherLoadComponent
   ],
   imports: [
     BrowserModule,

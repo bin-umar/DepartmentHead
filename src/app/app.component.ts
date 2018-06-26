@@ -6,16 +6,19 @@ import {
   Type,
   ViewChild,
   ViewContainerRef } from '@angular/core';
-import { LoadComponent } from './load/load.component';
 import { AuthService } from './services/auth.service';
-import { UserInfo } from './models/common';
+import { DepartmentInfo, UserInfo } from './models/common';
+
+import { TeacherLoadComponent } from './components/teacher-load/teacher-load.component';
+import { LoadComponent } from './components/load/load.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   entryComponents: [
-    LoadComponent
+    LoadComponent,
+    TeacherLoadComponent
   ]
 })
 
@@ -24,8 +27,11 @@ export class AppComponent implements OnDestroy {
   parent: ViewContainerRef;
   type: Type<LoadComponent>;
   cmpRef: ComponentRef<LoadComponent>;
+  depInfo: DepartmentInfo;
 
+  component = '';
   loadComponent = LoadComponent;
+  teacherComponent = TeacherLoadComponent;
 
   constructor (private componentFactoryResolver: ComponentFactoryResolver,
                private auth: AuthService) {
@@ -48,9 +54,11 @@ export class AppComponent implements OnDestroy {
           window.location.replace('./error.html');
         } else {
           this.auth.getUserKafedra(user.userId).subscribe(resp => {
-            console.log(resp);
+            if (!resp.error) {
+              this.depInfo = resp.data;
+              this.createComponentDynamically(this.loadComponent);
+            }
           });
-          this.createComponentDynamically(this.loadComponent);
         }
       });
     } else {
@@ -74,6 +82,10 @@ export class AppComponent implements OnDestroy {
     this.type = cmp;
 
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(this.type);
-    this.cmpRef = this.parent.createComponent(childComponent);
+    const CmpRef = this.parent.createComponent(childComponent);
+    CmpRef.instance.depInfo = this.depInfo;
+    this.component = CmpRef.instance.cmpName;
+
+    this.cmpRef = CmpRef;
   }
 }

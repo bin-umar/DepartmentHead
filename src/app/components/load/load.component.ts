@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { LoadService } from '../services/load.service';
-import { Faculty, Kafedra } from '../models/common';
-import { Load, Teacher } from '../models/load';
-import { AuthService } from '../services/auth.service';
+import {Component, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import { LoadService } from '../../services/load.service';
+import { DepartmentInfo, Faculty, Kafedra } from '../../models/common';
+import { Load, Teacher } from '../../models/load';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-load',
@@ -14,6 +14,8 @@ import { AuthService } from '../services/auth.service';
 
 export class LoadComponent implements OnInit {
 
+  @Output() cmpName: any = 'Сарбории кафедра';
+  @Input() depInfo: DepartmentInfo;
   kafedra: Kafedra = {
     id: null,
     shortName: '',
@@ -40,7 +42,15 @@ export class LoadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadService.getTeachersByKf(39).subscribe(resp => {
+    this.kafedra = {
+      id: this.depInfo.kf_id,
+      fullName: this.depInfo.kafedra,
+      shortName: ''
+    };
+
+    this.faculty.fullName = this.depInfo.faculty;
+
+    this.loadService.getTeachersByKf(this.kafedra.id).subscribe(resp => {
       if (!resp.error) {
         resp.data.forEach(teacher => {
           this.teachers.push({
@@ -52,7 +62,7 @@ export class LoadComponent implements OnInit {
           });
         });
 
-        this.loadService.getLoadSubjectsByKf(39).subscribe((response) => {
+        this.loadService.getLoadSubjectsByKf(this.kafedra.id).subscribe((response) => {
           if (!response.error) {
 
             this.subjects = response.data.slice();

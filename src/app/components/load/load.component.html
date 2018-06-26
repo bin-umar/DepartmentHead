@@ -1,4 +1,4 @@
-<app-fk-filter (OnChooseKafedra)="getKafedrasLoadById($event);"></app-fk-filter>
+<!--<app-fk-filter (OnChooseKafedra)="getKafedrasLoadById($event);"></app-fk-filter>-->
 
 <mat-card class="mat-elevation-z8">
   <div class="text-center">
@@ -46,7 +46,7 @@
     </tr>
     <ng-template ngFor let-i="index" let-id [ngForOf]="arrExSubjects">
       <ng-template ngFor let-j="index" let-subject [ngForOf]="findSubjects(id)">
-        <tr>
+        <tr [class.bg_eee]="i%2 === 1">
           <ng-template [ngIf]="j === 0">
             <td [attr.rowspan]="findSubjects(id).length">{{ i + 1 }}</td>
             <td class="text-left" style="padding-left: 10px;"

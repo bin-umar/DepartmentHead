@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 
-import {IAuth, UpdateResponse, UserInfo} from '../models/common';
+import {IAuth, IDepartmentInfo, UpdateResponse, UserInfo} from '../models/common';
 
 @Injectable()
 export class AuthService {
@@ -56,14 +56,14 @@ export class AuthService {
     const body = new HttpParams()
       .set('id', userId.toString())
       .set('route', 'authsess')
-      .set('operation', 'list')
+      .set('operation', 'one')
       .set('token', this.token);
 
     return this.http.post(this.host, body.toString(),
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).map((response: UpdateResponse) => {
+      }).map((response: IDepartmentInfo) => {
       return response;
     });
   }

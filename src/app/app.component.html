@@ -1,65 +1,43 @@
 <div class="gb__main-wrapper">
-  <!--<aside id="nav" class="lter bg-dark">-->
-    <!--<section class="vbox">-->
-      <!--<section class="w-f nav-xs">-->
-        <!--<div data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px" data-railopacity="0.2">-->
-          <!--<div class="clearfix wrapper dk logo-wrapper">-->
-            <!--<a class="logo text-center toogle">-->
-              <!--<img src="assets/images/education2.svg" class="svg-icon icon-logo">-->
-            <!--</a>-->
-          <!--</div>-->
-          <!--<nav class="nav-primary">-->
-            <!--<ul class="nav2">-->
-              <!--<li>-->
-                <!--<a class="toogle" (click)="createComponentDynamically(standardsListCmp);">-->
-                  <!--<figure>-->
-                    <!--<img src="assets/images/report2.png" class="svg-icon">-->
-                  <!--</figure>-->
-                  <!--<span>Стандартҳо</span>-->
-                <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--<a class="toogle" (click)="createComponentDynamically(groupsComponent);">-->
-                  <!--<figure>-->
-                    <!--<img src="assets/images/groups2.png" class="svg-icon">-->
-                  <!--</figure>-->
-                  <!--<span>Гурӯҳҳо</span>-->
-                <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--<a class="toogle" (click)="createComponentDynamically(curriculumListComponent);">-->
-                  <!--<figure>-->
-                    <!--<img src="assets/images/list.png" class="svg-icon">-->
-                  <!--</figure>-->
-                  <!--<span>Иқтибосҳо</span>-->
-                <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--<a class="toogle" (click)="createComponentDynamically(subjectsComponent);">-->
-                  <!--<figure>-->
-                    <!--<img src="assets/images/subjects.png" class="svg-icon">-->
-                  <!--</figure>-->
-                  <!--<span>Фаннҳо</span>-->
-                <!--</a>-->
-              <!--</li>-->
-              <!--<li>-->
-                <!--<a class="toogle" (click)="createComponentDynamically(loadComponent);">-->
-                  <!--<figure>-->
-                    <!--<img src="assets/images/teacher_load.png" class="svg-icon">-->
-                  <!--</figure>-->
-                  <!--<span>Сарбориҳо</span>-->
-                <!--</a>-->
-              <!--</li>-->
-            <!--</ul>-->
-          <!--</nav>-->
-        <!--</div>-->
-      <!--</section>-->
-    <!--</section>-->
-  <!--</aside>-->
+  <aside id="nav" class="lter bg-dark">
+    <section class="vbox">
+      <section class="w-f nav-xs">
+        <div data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px" data-railopacity="0.2">
+          <div class="clearfix wrapper dk logo-wrapper">
+            <a class="logo text-center toogle">
+              <img src="assets/images/education2.svg" class="svg-icon icon-logo">
+            </a>
+          </div>
+          <nav class="nav-primary">
+            <ul class="nav2">
+
+              <li>
+                <a class="toogle" (click)="createComponentDynamically(loadComponent);">
+                  <figure>
+                    <img src="assets/images/list.png" class="svg-icon">
+                  </figure>
+                  <span>Сарбориҳо</span>
+                </a>
+              </li>
+              <li>
+                <a class="toogle" (click)="createComponentDynamically(teacherComponent);">
+                  <figure>
+                    <img src="assets/images/teacher_load.png" class="svg-icon">
+                  </figure>
+                  <span>Омӯзгорон</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </section>
+    </section>
+  </aside>
 
   <header id="top-menu" class="header bg-dark js-main-top-menu">
     <div class="header-content application">
-      <h2 class="headertitle"> «Шуъбаи таълим» - <span style="color: #ff5a60;">Сарбории кафедра ва омӯзгорон</span></h2>
+      <input name="componentName" hidden [(ngModel)]="component" #cmp>
+      <h2 class="headertitle"> «Шуъбаи таълим» - <span style="color: #ff5a60;">{{cmp.value}}</span></h2>
     </div>
   </header>
 

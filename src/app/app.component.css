@@ -75,6 +75,7 @@ header.header {
 }
 
 .gb__main-wrapper {
+  margin-left: 96px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -244,7 +245,7 @@ a:not(.logo).current {
 }
 
 .nav-xs .nav-primary ul li a {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .nav-primary ul.nav>li>a {
@@ -278,12 +279,12 @@ a:not(.logo).current {
 }
 
 .nav-xs .nav-primary ul li a {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 figure{
   text-align: center;
-  margin: 12px 0;
+  margin: 15px 0 0 0;
   opacity: 0.8;
 }
 
