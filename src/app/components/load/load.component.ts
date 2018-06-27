@@ -67,8 +67,8 @@ export class LoadComponent implements OnInit {
 
             this.subjects = response.data.slice();
             this.subjects.forEach(subject => {
-              this.arrExSubjects.push(subject.idExSubject + subject.group);
 
+              subject.newId = subject.idExSubject + subject.group;
               subject.degree = this.authService.DEGREES[+subject.degree];
               subject.type = this.authService.TYPES[+subject.type];
               subject.idTeacher = this.teachers.find(x => +x.Id === +subject.idTeacher).Fio;
@@ -76,7 +76,25 @@ export class LoadComponent implements OnInit {
 
             });
 
-            // this.arrExSubjects.filter((v, i, self) => self.indexOf(v) === i);
+            const lections = this.subjects.filter(x => x.section === 'Лексия');
+            lections.forEach(item => {
+
+              if (+item.idGroup > 0) {
+
+                const mainSb = this.subjects.find(x => +x.id === +item.idGroup);
+                this.subjects.filter(x =>
+                  x.newId === item.newId && +x.id !== +item.id
+                ).forEach(x => {
+                  x.newId = mainSb.newId;
+                  this.arrExSubjects.push(x.newId);
+                });
+
+              } else {
+                this.arrExSubjects.push(item.newId);
+              }
+
+            });
+
             this.arrExSubjects = Array.from(new Set(this.arrExSubjects));
           }
         });
@@ -85,7 +103,60 @@ export class LoadComponent implements OnInit {
   }
 
   findSubjects(id: string) {
-    return this.subjects.filter(x => (x.idExSubject + x.group) === id);
+    return this.subjects.filter(x => x.newId === id);
+  }
+
+  findFlowedSubject (id: number) {
+    return this.subjects.filter(x => +x.idGroup === id);
+  }
+
+  getGroups(id: string) {
+    const groups = [];
+    this.subjects.filter(x => x.newId === id).forEach(item => {
+      groups.push(item.group);
+    });
+
+    return Array.from(new Set(groups));
+  }
+
+  getLection(id: string) {
+    const groups = this.getGroups(id);
+    let studentsAmount = 0;
+    const _subjects = this.subjects.slice();
+
+    groups.forEach(group => {
+      studentsAmount += +_subjects.find(x => x.group === group).studentsAmount;
+    });
+
+    const _subject = this.subjects.find(x => x.newId === id && x.section === 'Лексия');
+    _subject.studentsAmount = studentsAmount;
+
+    return _subject;
+  }
+
+  getOtherSectionsByGroup (id: string, group: string) {
+    return this.subjects.filter(x =>
+      x.newId === id && x.section !== 'Лексия' && x.group === group
+    );
+  }
+
+  filterFlowedSubjects() {
+    const _arrExSubjects = [];
+
+    this.arrExSubjects.forEach(id => {
+      const _subject = this.subjects.find(x => (
+        x.newId === id && x.section === 'Лексия'
+      ));
+
+      if (_subject) {
+        if (+_subject.idGroup === 0) { _arrExSubjects.push(id); }
+      } else {
+        _arrExSubjects.push(id);
+      }
+
+    });
+
+    return _arrExSubjects;
   }
 
   getKafedrasLoadById(filter: { kf: Kafedra, fc: Faculty }) {

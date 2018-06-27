@@ -53,7 +53,7 @@ export class AppComponent implements OnDestroy {
         if (!response) {
           window.location.replace('./error.html');
         } else {
-          this.auth.getUserKafedra(user.userId).subscribe(resp => {
+          this.auth.getUserKafedra().subscribe(resp => {
             if (!resp.error) {
               this.depInfo = resp.data;
               this.createComponentDynamically(this.loadComponent);

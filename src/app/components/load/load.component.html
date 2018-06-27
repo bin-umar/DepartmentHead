@@ -12,75 +12,105 @@
   <table id="table">
     <tr class="header-load-table">
       <th>№</th>
-      <th>
-        Номгӯи фанн
-      </th>
-      <th>
-        Курс
-      </th>
-      <th>
-        Семестр
-        <!--<mat-icon matTooltip="Семестр">pie_chart</mat-icon>-->
-      </th>
-      <th>
-        Гурӯҳ
-      </th>
-      <th>
-        Дараҷаи таҳсил
-      </th>
-      <th>
-        Шакли таҳсил
-      </th>
+      <th>Номгӯи фанн</th>
+      <th>Курс</th>
+      <th>Семестр</th>
+      <th>Дараҷаи таҳсил</th>
+      <th>Шакли таҳсил</th>
+      <th>Гурӯҳ</th>
       <th>
         <mat-icon matTooltip="Шумораи донишҷӯён">group</mat-icon>
       </th>
-      <th>
-        Намуд
-      </th>
-      <th>
-        Соат
-      </th>
-      <th>
-        Омӯзгор
-      </th>
+      <th>Намуд</th>
+      <th>Соат</th>
+      <th>Омӯзгор</th>
     </tr>
     <ng-template ngFor let-i="index" let-id [ngForOf]="arrExSubjects">
-      <ng-template ngFor let-j="index" let-subject [ngForOf]="findSubjects(id)">
-        <tr [class.bg_eee]="i%2 === 1">
-          <ng-template [ngIf]="j === 0">
-            <td [attr.rowspan]="findSubjects(id).length">{{ i + 1 }}</td>
-            <td class="text-left" style="padding-left: 10px;"
-                [attr.rowspan]="findSubjects(id).length">
-              {{ subject.subjectName }}
-            </td>
-            <td [attr.rowspan]="findSubjects(id).length">{{ subject.course }}</td>
-            <td [attr.rowspan]="findSubjects(id).length">{{ subject.term }}</td>
-            <td [attr.rowspan]="findSubjects(id).length">{{ subject.group }}</td>
-            <td [attr.rowspan]="findSubjects(id).length">{{ subject.degree }}</td>
-            <td [attr.rowspan]="findSubjects(id).length">{{ subject.type }}</td>
-            <td [attr.rowspan]="findSubjects(id).length">{{ subject.studentsAmount }}</td>
-          </ng-template>
+      <ng-template [ngIf]="getGroups(id).length === 1">
+        <ng-template ngFor let-j="index" let-subject [ngForOf]="findSubjects(id)">
+          <tr [class.bg_eee]="i % 2 === 1">
+            <ng-template [ngIf]="j === 0">
+              <td [attr.rowspan]="findSubjects(id).length">{{ i + 1 }}</td>
+              <td class="text-left" style="padding-left: 10px;"
+                  [attr.rowspan]="findSubjects(id).length">
+                {{ subject.subjectName }}
+              </td>
+              <td [attr.rowspan]="findSubjects(id).length">{{ subject.course }}</td>
+              <td [attr.rowspan]="findSubjects(id).length">{{ subject.term }}</td>
+              <td [attr.rowspan]="findSubjects(id).length">{{ subject.degree }}</td>
+              <td [attr.rowspan]="findSubjects(id).length">{{ subject.type }}</td>
+              <td [attr.rowspan]="findSubjects(id).length">{{ subject.group }}</td>
+              <td [attr.rowspan]="findSubjects(id).length">{{ subject.studentsAmount }}</td>
+            </ng-template>
 
-          <td>{{ subject.section }}</td>
-          <td>{{ subject.hour }}</td>
+            <td>{{ subject.section }}</td>
+            <td>{{ subject.hour }}</td>
+            <td class="teacher-column">
+              <ng-template [ngIf]="subject.idTeacher !== ''">
+                <div class="toogle" matTooltip="{{subject.idTeacher}}">{{ subject.idTeacher | teacherName }}</div>
+                <div style="float: right;">
+                  <mat-icon class="md-18"
+                            *ngIf="subject.isTeacherSaved === true"
+                            (click)="deleteTeacherId(+subject.id);">delete
+                  </mat-icon>
+
+                  <mat-icon class="md-18"
+                            *ngIf="subject.isTeacherSaved === false"
+                            (click)="connectTeacherWithSubject(subject.idTeacher, +subject.id)">save
+                  </mat-icon>
+                </div>
+              </ng-template>
+
+              <mat-select *ngIf="subject.idTeacher === ''"
+                          [(value)]="subject.idTeacher"
+                          placeholder="Интихоб намоед"
+                          panelClass="custom-select-panel">
+                <mat-option *ngFor="let teacher of teachers" value="{{teacher.Fio}}">
+                  {{ teacher.Fio + ' ' +  teacher.Post  }}
+                </mat-option>
+              </mat-select>
+            </td>
+          </tr>
+        </ng-template>
+      </ng-template>
+
+      <ng-template [ngIf]="getGroups(id).length > 1">
+        <tr [class.bg_eee]="i % 2 === 1">
+          <td [attr.rowspan]="findSubjects(id).length">{{ i + 1 }}</td>
+          <td class="text-left" style="padding-left: 10px;"
+              [attr.rowspan]="findSubjects(id).length">
+            {{ getLection(id).subjectName }}
+          </td>
+          <td [attr.rowspan]="findSubjects(id).length">{{ getLection(id).course }}</td>
+          <td [attr.rowspan]="findSubjects(id).length">{{ getLection(id).term }}</td>
+          <td [attr.rowspan]="findSubjects(id).length">{{ getLection(id).degree }}</td>
+          <td [attr.rowspan]="findSubjects(id).length">{{ getLection(id).type }}</td>
+          <td>
+             <span *ngFor="let group of getGroups(id)">
+                  {{ group }}<br>
+             </span>
+          </td>
+          <td>{{ getLection(id).studentsAmount }}</td>
+          <td>{{ getLection(id).section }}</td>
+          <td>{{ getLection(id).hour }}</td>
           <td class="teacher-column">
-            <ng-template [ngIf]="subject.idTeacher !== ''">
-              <div class="toogle" matTooltip="{{subject.idTeacher}}">{{ subject.idTeacher | teacherName }}</div>
+            <ng-template [ngIf]="getLection(id).idTeacher !== ''">
+              <div class="toogle" matTooltip="{{getLection(id).idTeacher}}">{{ getLection(id).idTeacher | teacherName }}</div>
               <div style="float: right;">
                 <mat-icon class="md-18"
-                          *ngIf="subject.isTeacherSaved === true"
-                          (click)="deleteTeacherId(+subject.id);">delete
+                          *ngIf="getLection(id).isTeacherSaved === true"
+                          (click)="deleteTeacherId(+getLection(id).id);">delete
                 </mat-icon>
 
                 <mat-icon class="md-18"
-                          *ngIf="subject.isTeacherSaved === false"
-                          (click)="connectTeacherWithSubject(subject.idTeacher, +subject.id)">save
+                          *ngIf="getLection(id).isTeacherSaved === false"
+                          (click)="connectTeacherWithSubject(getLection(id).idTeacher, +getLection(id).id)">save
                 </mat-icon>
               </div>
             </ng-template>
 
-            <mat-select *ngIf="subject.idTeacher === ''"
-                        [(value)]="subject.idTeacher"
+            <mat-select *ngIf="getLection(id).idTeacher === ''"
+                        [(value)]="getLection(id).idTeacher"
                         placeholder="Интихоб намоед"
                         panelClass="custom-select-panel">
               <mat-option *ngFor="let teacher of teachers" value="{{teacher.Fio}}">
@@ -89,6 +119,45 @@
             </mat-select>
           </td>
         </tr>
+
+        <ng-template ngFor let-j="index" let-group [ngForOf]="getGroups(id)">
+          <tr [class.bg_eee]="i % 2 === 1" *ngFor="let subject of getOtherSectionsByGroup(id, group); let s = index;">
+
+            <ng-template [ngIf]="s === 0">
+              <td [attr.rowspan]="getOtherSectionsByGroup(id, group).length">{{ subject.group}}</td>
+              <td [attr.rowspan]="getOtherSectionsByGroup(id, group).length">{{ subject.studentsAmount }}</td>
+            </ng-template>
+
+            <td>{{ subject.section }}</td>
+            <td>{{ subject.hour }}</td>
+            <td class="teacher-column">
+              <ng-template [ngIf]="subject.idTeacher !== ''">
+                <div class="toogle" matTooltip="{{subject.idTeacher}}">{{ subject.idTeacher | teacherName }}</div>
+                <div style="float: right;">
+                  <mat-icon class="md-18"
+                            *ngIf="subject.isTeacherSaved === true"
+                            (click)="deleteTeacherId(+subject.id);">delete
+                  </mat-icon>
+
+                  <mat-icon class="md-18"
+                            *ngIf="subject.isTeacherSaved === false"
+                            (click)="connectTeacherWithSubject(subject.idTeacher, +subject.id)">save
+                  </mat-icon>
+                </div>
+              </ng-template>
+
+              <mat-select *ngIf="subject.idTeacher === ''"
+                          [(value)]="subject.idTeacher"
+                          placeholder="Интихоб намоед"
+                          panelClass="custom-select-panel">
+                <mat-option *ngFor="let teacher of teachers" value="{{teacher.Fio}}">
+                  {{ teacher.Fio + ' ' +  teacher.Post  }}
+                </mat-option>
+              </mat-select>
+            </td>
+          </tr>
+        </ng-template>
+
       </ng-template>
     </ng-template>
     <!--<tr>-->

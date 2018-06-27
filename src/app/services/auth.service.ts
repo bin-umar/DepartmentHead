@@ -52,9 +52,8 @@ export class AuthService {
       });
   }
 
-  getUserKafedra(userId: number) {
+  getUserKafedra() {
     const body = new HttpParams()
-      .set('id', userId.toString())
       .set('route', 'authsess')
       .set('operation', 'one')
       .set('token', this.token);

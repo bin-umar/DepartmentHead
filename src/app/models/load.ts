@@ -1,5 +1,6 @@
 export interface Load {
   id: number;
+  newId: string;
   subjectName: string;
   idExSubject: number;
   term: number;
