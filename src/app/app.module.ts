@@ -24,11 +24,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthService } from './services/auth.service';
 
+import { CurriculumListComponent } from './components/curriculum-list/curriculum-list.component';
+import { ExtractionComponent } from './components/extraction/extraction.component';
 import { AppComponent } from './app.component';
-import { TeacherNamePipe } from './models/teacher-name.pipe';
+import { TeacherNamePipe } from './pipes/teacher-name.pipe';
 import { FkFilterComponent } from './components/fk-filter/fk-filter.component';
 import { LoadComponent } from './components/load/load.component';
-import { GetNamePipe } from './models/get-name.pipe';
+import { GetNamePipe } from './pipes/get-name.pipe';
+import { EducationYearPipe } from './pipes/education-year.pipe';
+
 import { TeacherLoadComponent } from './components/teacher-load/teacher-load.component';
 
 @NgModule({
@@ -38,7 +42,10 @@ import { TeacherLoadComponent } from './components/teacher-load/teacher-load.com
     FkFilterComponent,
     TeacherNamePipe,
     GetNamePipe,
-    TeacherLoadComponent
+    TeacherLoadComponent,
+    CurriculumListComponent,
+    ExtractionComponent,
+    EducationYearPipe
   ],
   imports: [
     BrowserModule,

@@ -11,6 +11,7 @@ import { DepartmentInfo, UserInfo } from './models/common';
 
 import { TeacherLoadComponent } from './components/teacher-load/teacher-load.component';
 import { LoadComponent } from './components/load/load.component';
+import { CurriculumListComponent } from './components/curriculum-list/curriculum-list.component';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ import { LoadComponent } from './components/load/load.component';
   styleUrls: ['./app.component.css'],
   entryComponents: [
     LoadComponent,
-    TeacherLoadComponent
+    TeacherLoadComponent,
+    CurriculumListComponent
   ]
 })
 
@@ -32,6 +34,7 @@ export class AppComponent implements OnDestroy {
   component = '';
   loadComponent = LoadComponent;
   teacherComponent = TeacherLoadComponent;
+  curriculumListComponent = CurriculumListComponent;
 
   constructor (private componentFactoryResolver: ComponentFactoryResolver,
                private auth: AuthService) {

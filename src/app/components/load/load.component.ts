@@ -140,25 +140,6 @@ export class LoadComponent implements OnInit {
     );
   }
 
-  filterFlowedSubjects() {
-    const _arrExSubjects = [];
-
-    this.arrExSubjects.forEach(id => {
-      const _subject = this.subjects.find(x => (
-        x.newId === id && x.section === 'Лексия'
-      ));
-
-      if (_subject) {
-        if (+_subject.idGroup === 0) { _arrExSubjects.push(id); }
-      } else {
-        _arrExSubjects.push(id);
-      }
-
-    });
-
-    return _arrExSubjects;
-  }
-
   getKafedrasLoadById(filter: { kf: Kafedra, fc: Faculty }) {
     this.faculty = filter.fc;
     this.kafedra = filter.kf;

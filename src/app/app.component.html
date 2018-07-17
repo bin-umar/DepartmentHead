@@ -1,5 +1,5 @@
 <div class="gb__main-wrapper">
-  <aside id="nav" class="lter bg-dark">
+  <aside id="nav" class="lter bg-dark d-print-none">
     <section class="vbox">
       <section class="w-f nav-xs">
         <div data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px" data-railopacity="0.2">
@@ -11,6 +11,14 @@
           <nav class="nav-primary">
             <ul class="nav2">
 
+              <li>
+                <a class="toogle" (click)="createComponentDynamically(curriculumListComponent);">
+                  <figure>
+                    <img src="assets/images/report2.png" class="svg-icon">
+                  </figure>
+                  <span>Иқтибосҳо</span>
+                </a>
+              </li>
               <li>
                 <a class="toogle" (click)="createComponentDynamically(loadComponent);">
                   <figure>
@@ -34,7 +42,7 @@
     </section>
   </aside>
 
-  <header id="top-menu" class="header bg-dark js-main-top-menu">
+  <header id="top-menu" class="header bg-dark js-main-top-menu d-print-none">
     <div class="header-content application">
       <input name="componentName" hidden [(ngModel)]="component" #cmp>
       <h2 class="headertitle"> «Шуъбаи таълим» - <span style="color: #ff5a60;">{{cmp.value}}</span></h2>
@@ -51,7 +59,7 @@
       </section>
     </section>
   </div>
-  <footer class="site-footer">
+  <footer class="site-footer d-print-none">
     <div class="site-footer__content">
       <p class="author">Copyright JT © (2018) - «Education Department» Application </p>
     </div>

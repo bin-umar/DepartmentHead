@@ -302,3 +302,9 @@ figure:hover{
 /deep/ .mat-tooltip {
   font-size: 13px;
 }
+
+@media print {
+  .gb__main-wrapper {
+    margin-left: 0;
+  }
+}
