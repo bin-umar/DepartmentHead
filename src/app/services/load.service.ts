@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
+
 import { AuthService } from './auth.service';
 import { ILoad, ITeacher } from '../models/load';
-import {IFaculty, KafedraRes, UpdateResponse} from '../models/common';
+import { IFaculty, KafedraRes, UpdateResponse } from '../models/common';
 
 @Injectable()
 export class LoadService {

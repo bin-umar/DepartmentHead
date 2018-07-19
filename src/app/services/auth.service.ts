@@ -15,7 +15,26 @@ export class AuthService {
   public token: string;
 
   public DEGREES = ['бакалавр', 'магистр', 'PhD'];
-  public TYPES = ['рӯзона', 'ғоибона', 'фосилавӣ'];
+  public TYPES = [{
+      name: 'рӯзона',
+      id: 1
+    },
+    {
+      name: 'ғоибона',
+      id: 2
+    },
+    {
+      name: 'фосилавӣ',
+      id: 25
+    },
+    {
+      name: 'магистратура',
+      id: 135
+    },
+    {
+      name: 'маълумоти дуюм',
+      id: 136
+    }];
 
   constructor(public http: HttpClient) {}
 

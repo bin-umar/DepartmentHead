@@ -88,3 +88,8 @@ export interface IStandard {
   error: boolean;
   data: [Standard];
 }
+
+export interface TypesOfStudying {
+  id: number;
+  name: string;
+}

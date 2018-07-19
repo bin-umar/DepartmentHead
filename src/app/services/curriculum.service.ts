@@ -39,7 +39,7 @@ export class CurriculumService {
             speciality: item.speciality,
             course: item.course,
             degree: this.auth.DEGREES[+item.degree],
-            type: this.auth.TYPES[+item.type],
+            type: this.auth.TYPES.find(o => o.id === +item.type).name,
             educationYear: item.educationYear,
             idStandard: item.idStandard,
             dateOfStandard: item.dateOfStandard,

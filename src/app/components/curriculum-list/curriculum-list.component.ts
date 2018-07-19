@@ -23,7 +23,7 @@ import { CurriculumService } from '../../services/curriculum.service';
 import { AuthService } from '../../services/auth.service';
 
 import { CurriculumList } from '../../models/curriculum';
-import {DepartmentInfo} from '../../models/common';
+import { DepartmentInfo } from '../../models/common';
 
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/observable/merge';

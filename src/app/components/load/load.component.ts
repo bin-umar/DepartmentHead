@@ -37,6 +37,8 @@ export class LoadComponent implements OnInit {
 
   arrExSubjects = [];
 
+  // type
+
   constructor(private loadService: LoadService,
               private authService: AuthService) {
   }
