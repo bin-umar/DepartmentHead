@@ -59,8 +59,10 @@ export class ExtractionComponent implements OnInit {
             kmds = item.kmd.toString().split(',');
           }
 
-          exam = (exams === undefined ? '' : exams[i] );
-          kmd = (kmds === undefined ? '' : kmds[i]);
+          exam = (exams === undefined ? item.exam : exams[i] );
+          kmd = (kmds === undefined ? item.kmd : kmds[i]);
+
+          if (exam !== kmd && exam !== '') { kmd = ''; }
 
           this.subjects.push({
             id: +item.id,

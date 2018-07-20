@@ -29,23 +29,25 @@ import { ExtractionComponent } from './components/extraction/extraction.componen
 import { AppComponent } from './app.component';
 import { TeacherNamePipe } from './pipes/teacher-name.pipe';
 import { FkFilterComponent } from './components/fk-filter/fk-filter.component';
-import { LoadComponent } from './components/load/load.component';
+import { DistributionComponent } from './components/distribution/distribution.component';
 import { GetNamePipe } from './pipes/get-name.pipe';
 import { EducationYearPipe } from './pipes/education-year.pipe';
 
 import { TeacherLoadComponent } from './components/teacher-load/teacher-load.component';
+import { LoadKafComponent } from './components/load-kaf/load-kaf.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoadComponent,
+    DistributionComponent,
     FkFilterComponent,
     TeacherNamePipe,
     GetNamePipe,
     TeacherLoadComponent,
     CurriculumListComponent,
     ExtractionComponent,
-    EducationYearPipe
+    EducationYearPipe,
+    LoadKafComponent
   ],
   imports: [
     BrowserModule,

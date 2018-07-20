@@ -10,31 +10,34 @@ import { AuthService } from './services/auth.service';
 import { DepartmentInfo, UserInfo } from './models/common';
 
 import { TeacherLoadComponent } from './components/teacher-load/teacher-load.component';
-import { LoadComponent } from './components/load/load.component';
+import { DistributionComponent } from './components/distribution/distribution.component';
 import { CurriculumListComponent } from './components/curriculum-list/curriculum-list.component';
+import { LoadKafComponent } from './components/load-kaf/load-kaf.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   entryComponents: [
-    LoadComponent,
+    DistributionComponent,
     TeacherLoadComponent,
-    CurriculumListComponent
+    CurriculumListComponent,
+    LoadKafComponent
   ]
 })
 
 export class AppComponent implements OnDestroy {
   @ViewChild('content', {read: ViewContainerRef})
   parent: ViewContainerRef;
-  type: Type<LoadComponent>;
-  cmpRef: ComponentRef<LoadComponent>;
+  type: Type<DistributionComponent>;
+  cmpRef: ComponentRef<DistributionComponent>;
   depInfo: DepartmentInfo;
 
   component = '';
-  loadComponent = LoadComponent;
+  distributionCmp = DistributionComponent;
   teacherComponent = TeacherLoadComponent;
   curriculumListComponent = CurriculumListComponent;
+  loadKafCmp = LoadKafComponent;
 
   constructor (private componentFactoryResolver: ComponentFactoryResolver,
                private auth: AuthService) {
@@ -59,7 +62,7 @@ export class AppComponent implements OnDestroy {
           this.auth.getUserKafedra().subscribe(resp => {
             if (!resp.error) {
               this.depInfo = resp.data;
-              this.createComponentDynamically(this.loadComponent);
+              this.createComponentDynamically(this.distributionCmp);
             }
           });
         }

@@ -5,16 +5,16 @@ import { Load, Teacher } from '../../models/load';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-load',
-  templateUrl: './load.component.html',
-  styleUrls: ['./load.component.css'],
+  selector: 'app-distribution',
+  templateUrl: './distribution.component.html',
+  styleUrls: ['./distribution.component.css'],
   providers: [ LoadService ],
   encapsulation: ViewEncapsulation.None,
 })
 
-export class LoadComponent implements OnInit {
+export class DistributionComponent implements OnInit {
 
-  @Output() cmpName: any = 'Сарбории кафедра';
+  @Output() cmpName: any = 'Тақсимкунии соатҳои кафедра';
   @Input() depInfo: DepartmentInfo;
   kafedra: Kafedra = {
     id: null,
@@ -72,7 +72,7 @@ export class LoadComponent implements OnInit {
 
               subject.newId = subject.idExSubject + subject.group;
               subject.degree = this.authService.DEGREES[+subject.degree];
-              subject.type = this.authService.TYPES[+subject.type];
+              subject.type = this.authService.TYPES.find(o => o.id === +subject.type).name;
               subject.idTeacher = this.teachers.find(x => +x.Id === +subject.idTeacher).Fio;
               subject.isTeacherSaved = !(subject.idTeacher === '');
 
