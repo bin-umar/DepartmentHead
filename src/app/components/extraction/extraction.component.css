@@ -146,6 +146,12 @@ th div{
   margin-bottom: 20px;
 }
 
+.half-width {
+  margin: 10px 0;
+  width: 49.7%;
+  display: inline-block;
+}
+
 .extraction-footer .half-width {
   width: 49.5%;
   margin-bottom: 15px;
@@ -155,6 +161,10 @@ th div{
 .extraction-footer .half-width>div,
 .extraction-footer .full-width>div{
   display: inline-block;
+}
+
+.bg-aw {
+  background-color: antiquewhite;
 }
 
 .sign-gap {

@@ -37,10 +37,8 @@ export class DistributionComponent implements OnInit {
 
   arrExSubjects = [];
 
-  // type
-
   constructor(private loadService: LoadService,
-              private authService: AuthService) {
+              private auth: AuthService) {
   }
 
   ngOnInit() {
@@ -71,15 +69,15 @@ export class DistributionComponent implements OnInit {
             this.subjects.forEach(subject => {
 
               subject.newId = subject.idExSubject + subject.group;
-              subject.degree = this.authService.DEGREES[+subject.degree];
-              subject.type = this.authService.TYPES.find(o => o.id === +subject.type).name;
+              subject.degree = this.auth.DEGREES[+subject.degree];
+              subject.type = this.auth.TYPES.find(o => o.id === +subject.type).name;
               subject.idTeacher = this.teachers.find(x => +x.Id === +subject.idTeacher).Fio;
               subject.isTeacherSaved = !(subject.idTeacher === '');
 
             });
 
-            const lections = this.subjects.filter(x => x.section === 'Лексия');
-            lections.forEach(item => {
+            const lectures = this.subjects.filter(x => x.section === 'Лексия');
+            lectures.forEach(item => {
 
               if (+item.idGroup > 0) {
 

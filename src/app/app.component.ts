@@ -62,7 +62,7 @@ export class AppComponent implements OnDestroy {
           this.auth.getUserKafedra().subscribe(resp => {
             if (!resp.error) {
               this.depInfo = resp.data;
-              this.createComponentDynamically(this.distributionCmp);
+              this.createComponentDynamically(this.loadKafCmp);
             }
           });
         }
