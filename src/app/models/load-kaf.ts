@@ -1,5 +1,4 @@
-import { Faculty } from './common';
-import {ICoefficient} from './settings';
+import { ICoefficient } from './settings';
 
 export interface LoadKaf {
   id: number;
@@ -7,6 +6,7 @@ export interface LoadKaf {
   subjectName: string;
   idExSubject: number;
   exam: string;
+  kmd: string;
   term: number;
   course: number;
   group: string;
@@ -51,8 +51,10 @@ export interface ILoadKafSubject {
   laboratory: IType;
   practical: IType;
   seminar: IType;
+  kmro: IType;
   totalAuditHour: number;
   exam: number;
+  checkout: number;
   advice: number;
   practices: number;
   gosExam: number;
@@ -74,11 +76,13 @@ export class LoadKafReport {
       if (+item.idGroup > 0) {
         const mainSubject = array.find(o => +o.id === +item.idGroup);
 
-        array.filter(o => o.newId === item.newId && +o.id !== item.id)
-             .forEach(o => {
-               o.newId = mainSubject.newId;
-               this.arrNewIds.add(mainSubject.newId);
-             });
+        if (mainSubject !== undefined) {
+          array.filter(o => o.newId === item.newId && +o.id !== item.id)
+            .forEach(o => {
+              o.newId = mainSubject.newId;
+              this.arrNewIds.add(mainSubject.newId);
+            });
+        }
 
       } else {
         this.arrNewIds.add(item.newId);
@@ -110,8 +114,10 @@ export class LoadKafReport {
         laboratory: {plan: null, total: null},
         practical: {plan: null, total: null},
         seminar: {plan: null, total: null},
+        kmro: {plan: null, total: null},
         totalAuditHour: null,
         exam: null,
+        checkout: null,
         advice: null,
         practices: null,
         gosExam: null,
@@ -154,32 +160,38 @@ export class LoadKafReport {
             }
           }
 
-          if (o.newId === (o.idExSubject + o.group)) {
-            switch (+o.idSection) {
-              case 1: subject.courseWork = this.coefs.courseWork * subject.studentsAmount; break;
-              case 2: subject.courseProject = this.coefs.courseProject * subject.studentsAmount; break;
-              case 3: subject.workKont = this.coefs.controlWork * subject.studentsAmount; break;
-              case 4: {
+          switch (+o.idSection) {
+            case 1: subject.courseWork = this.coefs.courseWork * subject.studentsAmount; break;
+            case 2: subject.courseProject = this.coefs.courseProject * subject.studentsAmount; break;
+            case 3: subject.workKont = this.coefs.controlWork * subject.studentsAmount; break;
+            case 4: {
+              if (o.newId === (o.idExSubject + o.group)) {
                 subject.lecture.plan = o.hour;
                 subject.lecture.total = o.hour;
-              } break;
-              case 5: {
-                subject.laboratory.plan = o.hour;
-                subject.laboratory.total = +o.hour * subject.subgroups;
-              } break;
-              case 6: {
-                subject.practical.plan = o.hour;
-                subject.practical.total = +o.hour * subject.groupsAmount;
-              } break;
-              case 7: {
-                subject.seminar.plan = o.hour;
-                subject.seminar.total = +o.hour * subject.groupsAmount;
-              } break;
-              case 9: subject.practices = o.hour; break;
-              case 10: subject.practices = o.hour; break;
-              case 11: subject.practices = o.hour; break;
-              case 12: subject.advice = o.hour; break;
-            }
+              }
+            } break;
+            case 5: {
+              subject.laboratory.plan = o.hour;
+              subject.laboratory.total = +o.hour * subject.subgroups;
+            } break;
+            case 6: {
+              subject.practical.plan = o.hour;
+              subject.practical.total = +o.hour * subject.groupsAmount;
+            } break;
+            case 7: {
+              subject.seminar.plan = o.hour;
+              subject.seminar.total = +o.hour * subject.groupsAmount;
+            } break;
+            case 8: {
+              subject.kmro.plan = o.hour;
+              subject.kmro.total = +o.hour * subject.groupsAmount;
+            } break;
+            case 9: subject.practices = o.hour; break;
+            case 10: subject.practices = o.hour; break;
+            case 11: subject.practices = this.coefs.diplomPrac * subject.studentsAmount; break;
+            case 12: subject.advice = o.hour; break;
+            case 13: subject.gosExam = this.coefs.gosExam * subject.studentsAmount; break;
+            case 14: subject.diploma = this.coefs.graduateWork * subject.studentsAmount; break;
           }
         });
 
@@ -191,12 +203,13 @@ export class LoadKafReport {
 
   private countAuditTotal(subject: ILoadKafSubject): number {
     return +subject.lecture.total + +subject.laboratory.total + +subject.practical.total
-          + +subject.seminar.total + +subject.exam + +subject.courseProject + +subject.courseWork
+          + +subject.seminar.total + +subject.courseProject + +subject.courseWork
           + +subject.workKont;
   }
 
   private countTotal(subject: ILoadKafSubject): number {
-    return subject.totalAuditHour + +subject.gosExam + +subject.diploma + +subject.practices;
+    return subject.totalAuditHour + +subject.gosExam + +subject.diploma + +subject.practices
+       + +subject.exam + subject.advice;
   }
 
   private findGroups(subjects: LoadKaf[]) {

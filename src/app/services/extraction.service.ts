@@ -3,6 +3,7 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { AuthService } from './auth.service';
 import { PrintInfoResp, ResponseExtractionSubject } from '../models/curriculum';
+import { ITeacher } from '../models/load';
 
 @Injectable()
 export class ExtractionService {
@@ -38,6 +39,22 @@ export class ExtractionService {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
       }).map((response: PrintInfoResp) => {
+      return response;
+    });
+  }
+
+  getTeachersByKf (kfId: number) {
+    const body = new HttpParams()
+      .set('kf_id', kfId.toString())
+      .set('route', 'teachers')
+      .set('operation', 'list')
+      .set('token', this.auth.token);
+
+    return this.auth.http.post(this.auth.host, body.toString(),
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+      }).map((response: ITeacher) => {
       return response;
     });
   }

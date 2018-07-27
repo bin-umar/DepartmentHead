@@ -131,6 +131,7 @@ export class LoadKafComponent implements OnInit {
         case 'lbTotal': sum += +item.laboratory.total; break;
         case 'prTotal': sum += +item.practical.total; break;
         case 'smTotal': sum += +item.seminar.total; break;
+        case 'kmroTotal': sum += +item.kmro.total; break;
         case 'advice': sum += +item.advice; break;
         case 'prac': sum += +item.practices; break;
         case 'diploma': sum += +item.diploma; break;
@@ -141,9 +142,14 @@ export class LoadKafComponent implements OnInit {
         case 'wk': sum += +item.workKont; break;
         case 'exam': sum += +item.exam; break;
         case 'tAH': sum += +item.totalAuditHour; break;
+        case 'checkout': sum += +item.checkout; break;
       }
     });
 
     return +sum.toFixed(2);
+  }
+
+  print() {
+    window.print();
   }
 }

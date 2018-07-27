@@ -181,7 +181,7 @@ th div{
   }
 
   /deep/ @page {
-    margin: 0;
+    margin: 10px 0;
   }
 
   table{ margin: 0 0 13px 0;}
