@@ -1,5 +1,3 @@
-import {LoadKaf} from './load-kaf';
-
 export interface Load {
   id: number;
   newId: string;
@@ -16,7 +14,6 @@ export interface Load {
   hour: number;
   idGroup: number;
   idTeacher: string;
-  isTeacherSaved: boolean;
 }
 
 export interface ILoad {
@@ -89,7 +86,7 @@ export class Distribution {
             subject.degree = o.degree;
             subject.type = o.type;
             subject.course = o.course;
-            subject.term = o.course;
+            subject.term = o.term;
             subject.subjectName = o.subjectName;
           }
 

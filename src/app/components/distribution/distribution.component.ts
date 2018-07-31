@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 
 import { DepartmentInfo, Faculty, Kafedra } from '../../models/common';
-import {Distribution, IDistribution, Load, Teacher} from '../../models/load';
+import { Distribution, IDistribution, Load, Teacher } from '../../models/load';
 import { AuthService } from '../../services/auth.service';
 import { LoadService } from '../../services/load.service';
 import { ExtractionService } from '../../services/extraction.service';
@@ -66,7 +66,6 @@ export class DistributionComponent implements OnInit {
               subject.newId = subject.idExSubject + subject.group;
               subject.degree = this.auth.DEGREES[+subject.degree];
               subject.type = this.auth.TYPES.find(o => o.id === +subject.type).name;
-              subject.isTeacherSaved = !(subject.idTeacher === '');
 
             });
 

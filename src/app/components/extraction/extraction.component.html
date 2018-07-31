@@ -126,8 +126,7 @@
 
       <ng-template [ngIf]="Curriculum.type === types[0].name">
         <tr>
-          <th *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13
-              ,14,15,16,17,18,19,20,21,22,23,24]">{{i}}</th>
+          <th *ngFor="let i of rowAmount(24)">{{i}}</th>
           <th class="d-print-none" *ngIf="Curriculum.locked === 0">25</th>
           <th class="d-none">25</th>
         </tr>
@@ -135,8 +134,7 @@
 
       <ng-template [ngIf]="Curriculum.type === types[1].name">
         <tr>
-          <th *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13
-              ,14,15,16,17,18,19,20,21,22]">{{i}}</th>
+          <th *ngFor="let i of rowAmount(22)">{{i}}</th>
           <th class="d-print-none" *ngIf="Curriculum.locked === 0">23</th>
           <th class="d-none">23</th>
         </tr>
@@ -144,8 +142,7 @@
 
       <ng-template [ngIf]="Curriculum.type === types[2].name">
         <tr>
-          <th *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13
-              ,14,15,16,17,18,19,20,21,22,23,24]">{{i}}</th>
+          <th *ngFor="let i of rowAmount(23)">{{i}}</th>
           <th class="d-print-none" *ngIf="Curriculum.locked === 0">24</th>
           <th class="d-none">24</th>
         </tr>
@@ -254,8 +251,7 @@
           </tr>
         </ng-template>
         <tr class="text-total">
-          <td></td>
-          <td>Ҳамагӣ</td>
+          <td colspan="2">Ҳамагӣ</td>
           <td>
             <span *ngIf="sum('credits', semester) !== 0">{{ sum('credits', semester) }}</span>
           </td>
@@ -316,15 +312,9 @@
               <span *ngIf="sum('manuPrac', semester) !== 0">{{ sum('manuPrac', semester) }}</span>
             </td>
           </ng-template>
-          <td>
-            <span *ngIf="sum('diplomPrac', semester) !== 0">{{ sum('diplomPrac', semester) }}</span>
-          </td>
-          <td>
-            <span *ngIf="sum('bachelorWork', semester) !== 0">{{ sum('bachelorWork', semester) }}</span>
-          </td>
-          <td>
-            <span *ngIf="sum('gosExam', semester) !== 0">{{ sum('gosExam', semester) }}</span>
-          </td>
+          <td></td>
+          <td></td>
+          <td></td>
           <td>
             <span *ngIf="sum('total', semester) !== 0">{{ sum('total', semester) }}</span>
           </td>
@@ -334,24 +324,23 @@
         </tr>
       </ng-template>
       <tr class="text-total">
-        <td></td>
-        <td>Ҷамъ</td>
+        <td colspan="2">Ҷамъ</td>
         <td>
-          <span *ngIf="sum('credits', 3) !== 0">{{ sum('credits', 3) }}</span>
+          <span *ngIf="sum('credits') !== 0">{{ sum('credits') }}</span>
         </td>
         <td>
-          <span *ngIf="sum('auditCredits', 3) !== 0">{{ sum('auditCredits', 3) }}</span>
+          <span *ngIf="sum('auditCredits') !== 0">{{ sum('auditCredits') }}</span>
         </td>
         <td>
-          <span *ngIf="sum('lessonHours', 3) !== 0">{{ sum('lessonHours', 3) }}</span>
+          <span *ngIf="sum('lessonHours') !== 0">{{ sum('lessonHours') }}</span>
         </td>
 
         <ng-template [ngIf]="Curriculum.type === types[2].name">
           <td>
-            <span *ngIf="sum('kmroCredits', 3) !== 0">{{ sum('kmroCredits', 3) }}</span>
+            <span *ngIf="sum('kmroCredits') !== 0">{{ sum('kmroCredits') }}</span>
           </td>
           <td>
-            <span *ngIf="sum('kmroHour', 3) !== 0">{{ sum('kmroHour', 3) }}</span>
+            <span *ngIf="sum('kmroHour') !== 0">{{ sum('kmroHour') }}</span>
           </td>
         </ng-template>
 
@@ -361,51 +350,45 @@
         <td></td>
         <td *ngIf="Curriculum.type === types[1].name"></td>
         <td>
-          <span *ngIf="sum('lkPlan', 3) !== 0">{{ sum('lkPlan', 3) }}</span>
+          <span *ngIf="sum('lkPlan') !== 0">{{ sum('lkPlan') }}</span>
         </td>
         <td>
-          <span *ngIf="sum('lkTotal', 3) !== 0">{{ sum('lkTotal', 3) }}</span>
+          <span *ngIf="sum('lkTotal') !== 0">{{ sum('lkTotal') }}</span>
         </td>
         <td>
-          <span *ngIf="sum('lbPlan', 3) !== 0">{{ sum('lbPlan', 3) }}</span>
+          <span *ngIf="sum('lbPlan') !== 0">{{ sum('lbPlan') }}</span>
         </td>
         <td>
-          <span *ngIf="sum('lbTotal', 3) !== 0">{{ sum('lbTotal', 3) }}</span>
+          <span *ngIf="sum('lbTotal') !== 0">{{ sum('lbTotal') }}</span>
         </td>
         <td>
-          <span *ngIf="sum('prPlan', 3) !== 0">{{ sum('prPlan', 3) }}</span>
+          <span *ngIf="sum('prPlan') !== 0">{{ sum('prPlan') }}</span>
         </td>
         <td>
-          <span *ngIf="sum('prTotal', 3) !== 0">{{ sum('prTotal', 3) }}</span>
+          <span *ngIf="sum('prTotal') !== 0">{{ sum('prTotal') }}</span>
         </td>
         <td>
-          <span *ngIf="sum('smPlan', 3) !== 0">{{ sum('smPlan', 3) }}</span>
+          <span *ngIf="sum('smPlan') !== 0">{{ sum('smPlan') }}</span>
         </td>
         <td>
-          <span *ngIf="sum('smTotal', 3) !== 0">{{ sum('smTotal', 3) }}</span>
+          <span *ngIf="sum('smTotal') !== 0">{{ sum('smTotal') }}</span>
         </td>
         <td *ngIf="Curriculum.type === types[2].name">
-          <span *ngIf="sum('advice', 3) !== 0">{{ sum('advice', 3) }}</span>
+          <span *ngIf="sum('advice') !== 0">{{ sum('advice') }}</span>
         </td>
         <ng-template [ngIf]="Curriculum.type === types[0].name">
           <td>
-            <span *ngIf="sum('trainingPrac', 3) !== 0">{{ sum('trainingPrac', 3) }}</span>
+            <span *ngIf="sum('trainingPrac') !== 0">{{ sum('trainingPrac') }}</span>
           </td>
           <td>
-            <span *ngIf="sum('manuPrac', 3) !== 0">{{ sum('manuPrac', 3) }}</span>
+            <span *ngIf="sum('manuPrac') !== 0">{{ sum('manuPrac') }}</span>
           </td>
         </ng-template>
+        <td></td>
+        <td></td>
+        <td></td>
         <td>
-          <span *ngIf="sum('diplomPrac', 3) !== 0">{{ sum('diplomPrac', 3) }}</span>
-        </td>
-        <td>
-          <span *ngIf="sum('bachelorWork', 3) !== 0">{{ sum('bachelorWork', 3) }}</span>
-        </td>
-        <td>
-          <span *ngIf="sum('gosExam', 3) !== 0">{{ sum('gosExam', 3) }}</span>
-        </td>
-        <td>
-          <span *ngIf="sum('total', 3) !== 0">{{ sum('total', 3) }}</span>
+          <span *ngIf="sum('total') !== 0">{{ sum('total') }}</span>
         </td>
         <td></td>
         <td class="d-none"></td>

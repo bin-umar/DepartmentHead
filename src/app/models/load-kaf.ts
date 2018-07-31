@@ -158,6 +158,10 @@ export class LoadKafReport {
                 subject.exam = this.coefs.exam.distance * subject.groupsAmount;
               }
             }
+
+            if (o.kmd !== '' && o.subjectName === 'Тарбияи ҷисмонӣ') {
+              subject.checkout = this.coefs.checkout * subject.groupsAmount;
+            }
           }
 
           switch (+o.idSection) {

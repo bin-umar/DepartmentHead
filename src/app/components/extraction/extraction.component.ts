@@ -1,7 +1,8 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ExtractionService } from '../../services/extraction.service';
+
 import { CurriculumList, ExtractionSubject, PrintInfo } from '../../models/curriculum';
 import { AuthService } from '../../services/auth.service';
+import { ExtractionService } from '../../services/extraction.service';
 
 @Component({
   selector: 'app-extraction',
@@ -104,15 +105,19 @@ export class ExtractionComponent implements OnInit {
     });
   }
 
+  rowAmount(amount: number): number[] {
+    return Array.from(Array(amount).keys());
+  }
+
   getSubjectsByTerm(semester: number) {
     return this.subjects.filter(item => +item.term - (item.course - 1) * 2 === semester);
   }
 
-  sum(prop, term) {
+  sum(prop: string, term?: number): number {
     let sum = 0;
     let subjects;
 
-    if (term !== 3) {
+    if (term) {
       subjects = this.getSubjectsByTerm(term);
     } else {
       subjects = this.subjects;
@@ -136,9 +141,6 @@ export class ExtractionComponent implements OnInit {
         case 'advice': sum += item.advice; break;
         case 'trainingPrac': sum += item.trainingPrac; break;
         case 'manuPrac': sum += item.manuPrac; break;
-        case 'diplomPrac': sum += item.diplomPrac; break;
-        case 'bachelorWork': sum += item.bachelorWork; break;
-        case 'gosExam': sum += item.gosExam; break;
         case 'total': sum += item.total; break;
       }
     });
@@ -146,18 +148,17 @@ export class ExtractionComponent implements OnInit {
     return +sum.toFixed(2);
   }
 
-  total(subject: ExtractionSubject) {
+  total(subject: ExtractionSubject): number {
     const result = +subject.lkTotal + +subject.lkPlan + +subject.smTotal +
       +subject.smPlan + +subject.lbPlan + +subject.lbTotal +
       +subject.prPlan + +subject.prTotal + +subject.trainingPrac +
-      +subject.manuPrac + +subject.diplomPrac + +subject.bachelorWork +
-      +subject.gosExam + +subject.kmroHour + +subject.advice;
+      +subject.manuPrac + +subject.kmroHour + +subject.advice;
 
     subject.total = result;
     return result;
   }
 
-  print() {
+  print(): void {
     window.print();
   }
 

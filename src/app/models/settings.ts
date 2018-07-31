@@ -17,6 +17,7 @@ export class ICoefficient {
   gosExam: number;
   diplomPrac: number;
   graduateWork: number;
+  checkout: number;
 
   constructor(settings: Settings[]) {
     settings.forEach(o => {
@@ -31,6 +32,7 @@ export class ICoefficient {
         case 'gosExam': this.gosExam = +o.value; break;
         case 'diplomPrac': this.diplomPrac = +o.value; break;
         case 'graduateWork': this.graduateWork = +o.value; break;
+        case 'checkout': this.checkout = +o.value; break;
       }
     });
   }

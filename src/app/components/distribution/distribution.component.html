@@ -26,7 +26,8 @@
     <ng-template ngFor let-subject let-i="index" [ngForOf]="subjects">
       <tr [class.bg_eee]="i % 2 === 1">
         <td [attr.rowspan]="subject.sections.length">{{ i + 1 }}</td>
-        <td [attr.rowspan]="subject.sections.length">{{ subject.subjectName }}</td>
+        <td [attr.rowspan]="subject.sections.length"
+            class="text-left" style="padding-left: 10px;">{{ subject.subjectName }}</td>
         <td [attr.rowspan]="subject.sections.length">{{ subject.course }}</td>
         <td [attr.rowspan]="subject.sections.length">{{ subject.term }}</td>
         <td [attr.rowspan]="subject.sections.length">{{ subject.degree }}</td>
