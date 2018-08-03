@@ -41,7 +41,10 @@
 
         <td class="teacher-column">
           <ng-template [ngIf]="subject.sections[0].idTeacher !== ''">
-            <div class="toogle" matTooltip="{{subject.sections[0].idTeacher}}">{{ subject.sections[0].idTeacher | teacherName }}</div>
+            <div class="toogle"
+                 matTooltip="{{subject.sections[0].idTeacher}}">
+              {{ subject.sections[0].idTeacher | teacherName }}
+            </div>
             <div style="float: right;">
               <mat-icon class="md-18"
                         *ngIf="subject.sections[0].isTeacherSaved === true"
@@ -50,12 +53,18 @@
 
               <mat-icon class="md-18"
                         *ngIf="subject.sections[0].isTeacherSaved === false"
-                        (click)="connectTeacherWithSubject(subject.sections[0].idTeacher, +subject.sections[0].id)">save
+                        (click)="connectTeacherWithSubject(subject.sections[0].idTeacher, +subject.sections[0].id)">
+                save
               </mat-icon>
             </div>
           </ng-template>
 
-          <mat-select *ngIf="subject.sections[0].idTeacher === ''"
+          <mat-icon matTooltip="Тақсимоти лоиҳа / кори курсӣ"
+                    *ngIf="subject.sections[0].idSection === 1 || subject.sections[0].idSection=== 2"
+                    class="md-24">view_list</mat-icon>
+
+          <mat-select *ngIf="subject.sections[0].idTeacher === ''
+                      && (subject.sections[0].idSection !== 1 && subject.sections[0].idSection !== 2)"
                       [(value)]="subject.sections[0].idTeacher"
                       placeholder="Интихоб намоед"
                       panelClass="custom-select-panel">
@@ -92,7 +101,14 @@
                 </div>
               </ng-template>
 
-              <mat-select *ngIf="section.idTeacher === ''"
+              <ng-template [ngIf]="section.idSection === 1 || section.idSection === 2">
+                <mat-icon matTooltip="Тақсимоти лоиҳа / кори курсӣ"
+                          class="md-24"
+                          (click)="openCWDistribution(section)">view_list</mat-icon>
+              </ng-template>
+
+              <mat-select *ngIf="section.idTeacher === ''
+                          && (section.idSection !== 1 && section.idSection !== 2)"
                           [(value)]="section.idTeacher"
                           placeholder="Интихоб намоед"
                           panelClass="custom-select-panel">

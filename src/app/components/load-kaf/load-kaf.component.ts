@@ -2,21 +2,17 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 
 import { AuthService } from '../../services/auth.service';
 import { LoadKafService } from '../../services/load-kaf.service';
-import { SettingsService } from '../../services/settings.service';
 
-import { ICoefficient } from '../../models/settings';
-import { DepartmentInfo, Faculty, Kafedra, TypesOfStudying} from '../../models/common';
+import { DepartmentInfo, Faculty, Kafedra, TypesOfStudying } from '../../models/common';
 import { ILoadKafSubject, LoadKaf, LoadKafReport } from '../../models/load-kaf';
 
 @Component({
   selector: 'app-load-kaf',
   templateUrl: './load-kaf.component.html',
   styleUrls: ['../extraction/extraction.component.css'],
-  providers: [
-    LoadKafService,
-    SettingsService
-  ]
+  providers: [ LoadKafService ]
 })
+
 export class LoadKafComponent implements OnInit {
 
   @Output() cmpName: any = 'Сарбории кафедра';
@@ -35,8 +31,7 @@ export class LoadKafComponent implements OnInit {
   subjects: ILoadKafSubject[] = [];
 
   constructor(private auth: AuthService,
-              private lkService: LoadKafService,
-              private stService: SettingsService) { }
+              private lkService: LoadKafService) {}
 
   ngOnInit() {
     this.kafedra = {
@@ -57,14 +52,8 @@ export class LoadKafComponent implements OnInit {
           subject.degree = this.auth.DEGREES[+subject.degree];
         });
 
-        this.stService.getLoadCoefficients().subscribe(response => {
-          if (!response.error) {
-
-            const coefs = new ICoefficient(response.data);
-            const loadKafReport = new LoadKafReport(subjects, coefs);
-            this.subjects = loadKafReport.getSubjects();
-          }
-        });
+        const loadKafReport = new LoadKafReport(subjects, this.lkService.coefs);
+        this.subjects = loadKafReport.getSubjects();
       }
     });
   }

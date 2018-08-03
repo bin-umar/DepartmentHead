@@ -35,6 +35,8 @@ import { EducationYearPipe } from './pipes/education-year.pipe';
 
 import { TeacherLoadComponent } from './components/teacher-load/teacher-load.component';
 import { LoadKafComponent } from './components/load-kaf/load-kaf.component';
+import { CourseWorksComponent } from './components/course-works/course-works.component';
+import {SettingsService} from './services/settings.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { LoadKafComponent } from './components/load-kaf/load-kaf.component';
     CurriculumListComponent,
     ExtractionComponent,
     EducationYearPipe,
-    LoadKafComponent
+    LoadKafComponent,
+    CourseWorksComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +75,8 @@ import { LoadKafComponent } from './components/load-kaf/load-kaf.component';
     MatCheckboxModule,
     MatTooltipModule
   ],
-  providers: [AuthService],
-  bootstrap: [AppComponent]
+  entryComponents: [ CourseWorksComponent ],
+  providers: [ AuthService, SettingsService ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { AuthService } from './auth.service';
-import { SettingsResp } from '../models/settings';
+import { ICoefficient, SettingsResp } from '../models/settings';
 
 @Injectable()
 export class SettingsService {
 
+  coefs: ICoefficient;
   constructor(private auth: AuthService) { }
 
   getLoadCoefficients() {
@@ -16,12 +17,16 @@ export class SettingsService {
       .set('operation', 'list')
       .set('token', this.auth.token);
 
-    return this.auth.http.post(this.auth.host, body.toString(),
+    this.auth.http.post<SettingsResp>(this.auth.host, body.toString(),
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).map((response: SettingsResp) => {
-        return response;
+      }).subscribe(resp => {
+        if (!resp.error) {
+          this.coefs = new ICoefficient(resp.data);
+        }
+    }, (error: HttpErrorResponse) => {
+      console.log (error.name + ' ' + error.message);
     });
   }
 }

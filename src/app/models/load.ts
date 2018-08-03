@@ -21,14 +21,38 @@ export interface ILoad {
   data: [Load];
 }
 
-interface ISection {
+export interface ISection {
   id: number;
   groups: string[];
   studentsAmount: number;
+  idSection: number;
   section: string;
   hour: number;
   idTeacher: string;
   isTeacherSaved: boolean;
+}
+
+interface ISectionCW {
+  id: number;
+  hour: number;
+  studentsAmount: number;
+  idTeacher: string;
+  isTeacherSaved: boolean;
+}
+
+export interface ICourseWorks {
+  id: number;
+  subjectName: string;
+  term: number;
+  course: number;
+  degree: string;
+  type: string;
+  hour: number;
+  group: string;
+  studentsAmount: number;
+  idSection: number;
+  section: string;
+  sections: ISectionCW;
 }
 
 export interface IDistribution {
@@ -97,11 +121,12 @@ export class Distribution {
                 const groupInfo = this.findGroups(array);
 
                 subject.sections.push({
-                  id: o.id,
+                  id: +o.id,
                   groups: groupInfo.groups,
                   studentsAmount: groupInfo.studentsAmount,
+                  idSection: +o.idSection,
                   section: o.section,
-                  hour: o.hour,
+                  hour: +o.hour,
                   idTeacher: teacher,
                   isTeacherSaved: !(teacher === '')
                 });
@@ -109,9 +134,10 @@ export class Distribution {
             } break;
             default: {
               subject.sections.push({
-                id: o.id,
+                id: +o.id,
                 groups: Array.of(o.group),
                 studentsAmount: o.studentsAmount,
+                idSection: +o.idSection,
                 section: o.section,
                 hour: o.hour,
                 idTeacher: teacher,

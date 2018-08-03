@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 
+import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { PrintInfoResp, ResponseExtractionSubject } from '../models/curriculum';
 import { ITeacher } from '../models/load';
@@ -21,9 +22,9 @@ export class ExtractionService {
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).map((response: ResponseExtractionSubject) => {
+      }).pipe(map((response: ResponseExtractionSubject) => {
       return response;
-    });
+    }));
   }
 
   getPrintInfo (id: number) {
@@ -38,9 +39,9 @@ export class ExtractionService {
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).map((response: PrintInfoResp) => {
+      }).pipe(map((response: PrintInfoResp) => {
       return response;
-    });
+    }));
   }
 
   getTeachersByKf (kfId: number) {
@@ -54,8 +55,8 @@ export class ExtractionService {
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).map((response: ITeacher) => {
+      }).pipe(map((response: ITeacher) => {
       return response;
-    });
+    }));
   }
 }

@@ -1,10 +1,15 @@
 import { Component, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
 import { DepartmentInfo, Faculty, Kafedra } from '../../models/common';
-import { Distribution, IDistribution, Load, Teacher } from '../../models/load';
+import { Distribution, IDistribution,
+         ISection, Load, Teacher} from '../../models/load';
+
 import { AuthService } from '../../services/auth.service';
 import { LoadService } from '../../services/load.service';
 import { ExtractionService } from '../../services/extraction.service';
+
+import { CourseWorksComponent } from '../course-works/course-works.component';
 
 @Component({
   selector: 'app-distribution',
@@ -34,7 +39,8 @@ export class DistributionComponent implements OnInit {
 
   constructor(private loadService: LoadService,
               private extService: ExtractionService,
-              private auth: AuthService) {
+              private auth: AuthService,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -108,6 +114,14 @@ export class DistributionComponent implements OnInit {
           }
         });
       }
+    });
+  }
+
+  openCWDistribution(section: ISection) {
+    console.log(section);
+    this.dialog.open(CourseWorksComponent, {
+      width: '500px',
+      data: section
     });
   }
 }

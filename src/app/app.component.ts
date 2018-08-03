@@ -7,6 +7,8 @@ import {
   ViewChild,
   ViewContainerRef } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { SettingsService } from './services/settings.service';
+
 import { DepartmentInfo, UserInfo } from './models/common';
 
 import { TeacherLoadComponent } from './components/teacher-load/teacher-load.component';
@@ -40,7 +42,8 @@ export class AppComponent implements OnDestroy {
   loadKafCmp = LoadKafComponent;
 
   constructor (private componentFactoryResolver: ComponentFactoryResolver,
-               private auth: AuthService) {
+               private auth: AuthService,
+               private stService: SettingsService) {
 
     const href = window.location.href;
     if (href.indexOf('hash') !== -1) {
@@ -62,7 +65,8 @@ export class AppComponent implements OnDestroy {
           this.auth.getUserKafedra().subscribe(resp => {
             if (!resp.error) {
               this.depInfo = resp.data;
-              this.createComponentDynamically(this.loadKafCmp);
+              this.stService.getLoadCoefficients();
+              this.createComponentDynamically(this.distributionCmp);
             }
           });
         }

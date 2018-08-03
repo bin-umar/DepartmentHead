@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 
+import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ILoad } from '../models/load';
 import { IFaculty, KafedraRes, UpdateResponse } from '../models/common';
@@ -21,9 +22,9 @@ export class LoadService {
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).map((response: ILoad) => {
+      }).pipe(map((response: ILoad) => {
       return response;
-    });
+    }));
   }
 
   saveTeacherId (idTeacher: number, idSubject: number) {
@@ -38,9 +39,9 @@ export class LoadService {
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).map((response: UpdateResponse) => {
+      }).pipe(map((response: UpdateResponse) => {
       return response;
-    });
+    }));
   }
 
   deleteTeacherId (idSubject: number) {
@@ -54,9 +55,9 @@ export class LoadService {
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).map((response: UpdateResponse) => {
+      }).pipe(map((response: UpdateResponse) => {
       return response;
-    });
+    }));
   }
 
   getFacultyList() {
@@ -69,9 +70,9 @@ export class LoadService {
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).map((response: IFaculty) => {
+      }).pipe(map((response: IFaculty) => {
       return response;
-    });
+    }));
   }
 
   getKafedraByFacultyId(fcId: number) {
@@ -85,8 +86,8 @@ export class LoadService {
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).map((response: KafedraRes) => {
+      }).pipe(map((response: KafedraRes) => {
       return response;
-    });
+    }));
   }
 }

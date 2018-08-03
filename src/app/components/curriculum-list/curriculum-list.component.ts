@@ -14,8 +14,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable, BehaviorSubject, fromEvent, merge } from 'rxjs';
+import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { ExtractionComponent } from '../extraction/extraction.component';
 
@@ -24,11 +24,6 @@ import { AuthService } from '../../services/auth.service';
 
 import { CurriculumList } from '../../models/curriculum';
 import { DepartmentInfo } from '../../models/common';
-
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
 
 @Component({
   selector: 'app-curriculum-list',
@@ -108,9 +103,10 @@ export class CurriculumListComponent implements OnInit {
   public loadData() {
     this.curriculumDatabase = new CurriculumService(this.httpClient, this.auth);
     this.dataSource = new CurriculumDataSource(this.curriculumDatabase, this.paginator, this.sort, this.depInfo.kf_id);
-    Observable.fromEvent(this.filterInput.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filterInput.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged())
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -155,7 +151,7 @@ export class CurriculumDataSource extends DataSource<CurriculumList> {
 
     this._exampleDatabase.getAllCurriculums(this.kf_id);
 
-    return Observable.merge(...displayDataChanges).map(() => {
+    return merge(...displayDataChanges).pipe(map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((issue: CurriculumList) => {
         const searchStr = (issue.id + issue.number + issue.speciality + issue.course + issue.educationYear).toLowerCase();
@@ -169,10 +165,10 @@ export class CurriculumDataSource extends DataSource<CurriculumList> {
       const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
       return this.renderedData;
-    });
+    }));
   }
-  disconnect() {
-  }
+
+  disconnect() {}
 
   /** Returns a sorted copy of the database data. */
   sortData(data: CurriculumList[]): CurriculumList[] {
