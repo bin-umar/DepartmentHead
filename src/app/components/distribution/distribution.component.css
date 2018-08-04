@@ -75,7 +75,7 @@ th div{
   top: 0;
 }
 
-.header-load-table { height: 70px; }
+/deep/ .header-load-table { height: 70px; }
 
 .custom-select-panel { max-width: 450px !important; }
 
@@ -92,4 +92,9 @@ th div{
   border-bottom: 1px solid #000;
 }
 
+.group-column {
+  overflow: hidden;
+  width: 100%;
+  white-space: nowrap;
+}
 .report-table { margin-bottom: 10px; }

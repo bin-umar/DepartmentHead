@@ -66,7 +66,8 @@ export class AppComponent implements OnDestroy {
             if (!resp.error) {
               this.depInfo = resp.data;
               this.stService.getLoadCoefficients();
-              this.createComponentDynamically(this.distributionCmp);
+              this.stService.getTeachersByKf(this.depInfo.kf_id);
+              // this.createComponentDynamically(this.distributionCmp);
             }
           });
         }

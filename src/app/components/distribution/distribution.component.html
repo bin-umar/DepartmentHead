@@ -32,10 +32,20 @@
         <td [attr.rowspan]="subject.sections.length">{{ subject.term }}</td>
         <td [attr.rowspan]="subject.sections.length">{{ subject.degree }}</td>
         <td [attr.rowspan]="subject.sections.length">{{ subject.type }}</td>
-        <td>
-          <div style="overflow: hidden; width: 100%; white-space: nowrap;" *ngFor="let g of subject.sections[0].groups">{{ g }}</div>
-        </td>
-        <td>{{ subject.sections[0].studentsAmount }}</td>
+
+        <ng-template [ngIf]="getGroupsAmount(subject) === 1">
+          <td [attr.rowspan]="subject.sections.length">
+            <div class="group-column">{{ subject.sections[0].groups[0] }}</div>
+          </td>
+          <td [attr.rowspan]="subject.sections.length">{{ subject.sections[0].studentsAmount }}</td>
+        </ng-template>
+
+        <ng-template [ngIf]="getGroupsAmount(subject) > 1">
+          <td>
+            <div class="group-column" *ngFor="let g of subject.sections[0].groups">{{ g }}</div>
+          </td>
+          <td>{{ subject.sections[0].studentsAmount }}</td>
+        </ng-template>
         <td>{{ subject.sections[0].section }}</td>
         <td>{{ subject.sections[0].hour }}</td>
 
@@ -61,7 +71,8 @@
 
           <mat-icon matTooltip="Тақсимоти лоиҳа / кори курсӣ"
                     *ngIf="subject.sections[0].idSection === 1 || subject.sections[0].idSection=== 2"
-                    class="md-24">view_list</mat-icon>
+                    class="md-24"
+                    (click)="openCWDistribution(subject);">view_list</mat-icon>
 
           <mat-select *ngIf="subject.sections[0].idTeacher === ''
                       && (subject.sections[0].idSection !== 1 && subject.sections[0].idSection !== 2)"
@@ -78,10 +89,12 @@
       <ng-template [ngIf]="subject.sections.length > 1">
         <ng-template ngFor let-section let-j="index" [ngForOf]="subject.sections">
           <tr [class.bg_eee]="i % 2 === 1" *ngIf="j !== 0">
-            <td>
-              <div style="overflow: hidden; width: 100%; white-space: nowrap;" *ngFor="let g of section.groups">{{ g }}</div>
-            </td>
-            <td>{{ section.studentsAmount }}</td>
+            <ng-template [ngIf]="getGroupsAmount(subject) > 1">
+              <td>
+                <div class="group-column" *ngFor="let g of section.groups">{{ g }}</div>
+              </td>
+              <td>{{ section.studentsAmount }}</td>
+            </ng-template>
             <td>{{ section.section }}</td>
             <td>{{ section.hour }}</td>
 

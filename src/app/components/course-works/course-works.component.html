@@ -1,5 +1,5 @@
 <div mat-dialog-title>
-  <h2>Тақсимкунии соатҳои {{ data.section }}</h2>
+  <h4 class="text-center">Тақсимкунии соатҳои <i class="highlighted">"{{ data.section }}"</i></h4>
 </div>
 
 <div mat-dialog-content>
@@ -34,189 +34,91 @@
     </tr>
   </table>
 
+  <table *ngIf="data.sections.length > 0" id="table">
+    <tr>
+      <th>
+        <mat-icon matTooltip="Шумораи донишҷӯён">group</mat-icon>
+      </th>
+      <th>Соат</th>
+      <th>Омӯзгор</th>
+      <th></th>
+    </tr>
+    <ng-template ngFor let-s let-i="index" [ngForOf]="data.sections">
+      <tr [class.bg_eee]="i % 2 === 1">
+        <td>{{ s.studentsAmount }}</td>
+        <td>{{ s.hour }}</td>
+        <td>
+          <div class="toogle" matTooltip="{{ s.idTeacher }}">{{ s.idTeacher | teacherName }}</div>
+        </td>
+        <td class="text-center">
+          <mat-icon matTooltip="Хориҷ кардан"
+                    class="md-18"
+                    (click)="deleteSection(s.id)">delete</mat-icon>
+        </td>
+      </tr>
+    </ng-template>
+  </table>
 
-  <!--<form class="example-form">-->
-    <!--<mat-form-field class="full-width">-->
-      <!--<input matInput-->
-             <!--name="special"-->
-             <!--[(ngModel)]="selectedSubject"-->
-             <!--placeholder="Номи фанн"-->
-             <!--[matAutocomplete]="auto"-->
-             <!--[formControl]="myControl"-->
-             <!--value=""-->
-             <!--required-->
-             <!--cdkFocusInitial>-->
+  <mat-card *ngIf="leftOverStudents() > 0">
+    <form>
+      <div class="add-form">
+        <div style="width: 22%">
+          <mat-slider
+            style="width: 100%"
+            class="toogle"
+            [max]="leftOverStudents()"
+            [min]="0"
+            [step]="1"
+            [thumbLabel]="true"
+            name="studentsAmount"
+            (change)="setHours()"
+            [(ngModel)]="newSection.studentsAmount">
+          </mat-slider>
+        </div>
 
-      <!--<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">-->
-        <!--<mat-option *ngFor="let option of filteredOptions | async" [value]="option">-->
-          <!--{{ option.name }}-->
-        <!--</mat-option>-->
-      <!--</mat-autocomplete>-->
-    <!--</mat-form-field>-->
-
-    <!--<table class="full-width text-center">-->
-      <!--<tr>-->
-        <!--<td colspan="2">-->
-          <!--<mat-form-field class="full-width">-->
-            <!--<mat-select [(value)]="data.idType" placeholder="Бахш">-->
-              <!--<mat-option *ngFor="let type of subjectTypes" [value]="type.id">-->
-                <!--Бахши  {{type.name | lowercase}}-->
-              <!--</mat-option>-->
-            <!--</mat-select>-->
-          <!--</mat-form-field>-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--<mat-checkbox [(ngModel)]="checked" name="selective">-->
-            <!--Фанни интихобӣ-->
-          <!--</mat-checkbox>-->
-        <!--</td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-        <!--<td></td>-->
-        <!--<td class="border-bottom bb" colspan="2">-->
-          <!--<h6>Шаклҳои назорат аз рӯи семестрҳо</h6>-->
-        <!--</td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-        <!--<td>-->
-          <!--<mat-form-field class="full-width">-->
-            <!--<input type="number"-->
-                   <!--name="credits"-->
-                   <!--matInput-->
-                   <!--[(ngModel)]="data.credits"-->
-                   <!--required-->
-                   <!--placeholder="Ҳаҷми кредитҳо">-->
-          <!--</mat-form-field>-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--<mat-form-field class="full-width">-->
-            <!--<input type="text"-->
-                   <!--matInput-->
-                   <!--name="exam"-->
-                   <!--[(ngModel)]="data.typeOfMonitoring.exam"-->
-                   <!--placeholder="Имтиҳон"-->
-                   <!--value="">-->
-          <!--</mat-form-field>-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--<mat-form-field class="full-width">-->
-            <!--<input type="text"-->
-                   <!--matInput-->
-                   <!--name="goUpIWS"-->
-                   <!--[(ngModel)]="data.typeOfMonitoring.goUpIWS"-->
-                   <!--placeholder="Ҳимояи КМД"-->
-                   <!--value="">-->
-          <!--</mat-form-field>-->
-        <!--</td>-->
-      <!--</tr>-->
-      <!--<tr class="border-bottom bb">-->
-        <!--<td class="border-bottom bb" colspan="3">-->
-          <!--<h6>Ба омӯзгор</h6>-->
-        <!--</td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-        <!--<td></td>-->
-        <!--<td class="border-bottom bb" colspan="2">-->
-          <!--<h6>Аз ҷумла</h6>-->
-        <!--</td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-        <!--<td>-->
-          <!--<mat-form-field class="full-width">-->
-            <!--<input type="number"-->
-                   <!--matInput-->
-                   <!--name="total"-->
-                   <!--[(ngModel)]="data.toTeacher.total"-->
-                   <!--required-->
-                   <!--placeholder="Ҳамагӣ"-->
-                   <!--value="">-->
-          <!--</mat-form-field>-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--<mat-form-field class="full-width">-->
-            <!--<input type="number"-->
-                   <!--matInput-->
-                   <!--name="audit"-->
-                   <!--[(ngModel)]="data.toTeacher.including.audit"-->
-                   <!--placeholder="Аудиторӣ"-->
-                   <!--required-->
-                   <!--value="">-->
-          <!--</mat-form-field>-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--<mat-form-field class="full-width">-->
-            <!--<input type="number"-->
-                   <!--matInput name="kmro"-->
-                   <!--[(ngModel)]="data.toTeacher.including.kmro"-->
-                   <!--placeholder="КМРО"-->
-                   <!--required-->
-                   <!--value="">-->
-          <!--</mat-form-field>-->
-        <!--</td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-        <!--<td></td>-->
-        <!--<td class="border-bottom bb" colspan="2">-->
-          <!--<h6>Тақсимоти кредитҳо ба курсҳо ва семестрҳо</h6>-->
-        <!--</td>-->
-      <!--</tr>-->
-      <!--<tr>-->
-        <!--<td>-->
-          <!--<mat-form-field class="full-width">-->
-            <!--<input type="number"-->
-                   <!--matInput-->
-                   <!--name="iws"-->
-                   <!--required-->
-                   <!--[(ngModel)]="data.IWS"-->
-                   <!--placeholder="КМД"-->
-                   <!--value="">-->
-          <!--</mat-form-field>-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--<mat-form-field class="full-width">-->
-            <!--<input type="text"-->
-                   <!--matInput-->
-                   <!--name="terms"-->
-                   <!--[(ngModel)]="terms"-->
-                   <!--required-->
-                   <!--placeholder="Семестрҳо"-->
-                   <!--value="">-->
-          <!--</mat-form-field>-->
-        <!--</td>-->
-        <!--<td>-->
-          <!--<mat-form-field class="full-width">-->
-            <!--<input type="text"-->
-                   <!--matInput-->
-                   <!--name="termCredits"-->
-                   <!--[(ngModel)]="credits"-->
-                   <!--required-->
-                   <!--placeholder="Кредитҳо"-->
-                   <!--value="">-->
-          <!--</mat-form-field>-->
-        <!--</td>-->
-      <!--</tr>-->
-    <!--</table>-->
-  <!--</form>-->
+        <div style="width: 10%">
+          <mat-form-field style="width: 100%">
+            <input matInput
+                   readonly
+                   placeholder="Соат"
+                   [ngModel]="newSection.hour"
+                   name="hour">
+          </mat-form-field>
+        </div>
+        <div style="width: 57%">
+          <mat-form-field style="width: 100%">
+            <mat-select placeholder="Омӯзгорро интихоб намоед"
+                        [(value)]="newSection.idTeacher"
+                        panelClass="custom-select-panel">
+              <mat-option *ngFor="let teacher of teachers" value="{{ teacher.Fio }}">
+                {{ teacher.Fio + ' ' +  teacher.Post  }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div style="width: 8%">
+          <button style="width: 100%; padding-bottom: 0;"
+                  class="btn bg-dark text-colored"
+                  (click)="addSection()">
+            <mat-icon>add_circle_outline</mat-icon>
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card>
 </div>
 
 <div mat-dialog-actions>
-  <!--<button *ngIf="add"-->
-          <!--(click)="confirmAddSubject();"-->
-          <!--mat-raised-button-->
-          <!--class="bg-dark text-colored half-width">-->
-    <!--<mat-icon>add_circle_outline</mat-icon> Илова намудан-->
-  <!--</button>-->
-
-  <!--<button *ngIf="!add"-->
-          <!--(click)="confirmSavingSubject();"-->
-          <!--mat-raised-button-->
-          <!--class="bg-dark text-colored half-width">-->
-    <!--<mat-icon>save</mat-icon> Сабт кардан-->
-  <!--</button>-->
-  <!--<button cdkFocusInitial-->
-          <!--mat-raised-button-->
-          <!--(click)="onNoClick()"-->
-          <!--class="bg-dark text-colored half-width">-->
-    <!--<mat-icon>cancel</mat-icon> Қатъ кардан-->
-  <!--</button>-->
+  <button *ngIf="!add"
+          mat-raised-button
+          (click)="submit()"
+          class="bg-dark text-colored half-width">
+    <mat-icon>save</mat-icon> Сабт кардан
+  </button>
+  <button cdkFocusInitial
+          mat-raised-button
+          (click)="onNoClick()"
+          class="bg-dark text-colored half-width">
+    <mat-icon>cancel</mat-icon> Қатъ кардан
+  </button>
 </div>

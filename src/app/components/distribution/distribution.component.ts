@@ -2,12 +2,11 @@ import { Component, Input, OnInit, Output, ViewEncapsulation } from '@angular/co
 import { MatDialog } from '@angular/material';
 
 import { DepartmentInfo, Faculty, Kafedra } from '../../models/common';
-import { Distribution, IDistribution,
-         ISection, Load, Teacher} from '../../models/load';
+import { Load, Teacher} from '../../models/load';
+import { CourseWorks, Distribution, IDistribution} from '../../models/distribution';
 
 import { AuthService } from '../../services/auth.service';
 import { LoadService } from '../../services/load.service';
-import { ExtractionService } from '../../services/extraction.service';
 
 import { CourseWorksComponent } from '../course-works/course-works.component';
 
@@ -15,7 +14,7 @@ import { CourseWorksComponent } from '../course-works/course-works.component';
   selector: 'app-distribution',
   templateUrl: './distribution.component.html',
   styleUrls: ['./distribution.component.css'],
-  providers: [ LoadService, ExtractionService ],
+  providers: [ LoadService ],
   encapsulation: ViewEncapsulation.None,
 })
 
@@ -38,9 +37,9 @@ export class DistributionComponent implements OnInit {
   teachers: Teacher[];
 
   constructor(private loadService: LoadService,
-              private extService: ExtractionService,
               private auth: AuthService,
               public dialog: MatDialog) {
+    this.teachers = this.loadService.teachers;
   }
 
   ngOnInit() {
@@ -52,35 +51,34 @@ export class DistributionComponent implements OnInit {
 
     this.faculty.fullName = this.depInfo.faculty;
 
-    this.extService.getTeachersByKf(this.kafedra.id).subscribe(resp => {
-      if (!resp.error) {
-        this.teachers = resp.data.slice();
-        this.teachers.unshift({
-          Id: 0,
-          Fio: '',
-          Post: '',
-          UchStep: '',
-          Science_degree: ''
+    this.loadService.getLoadSubjectsByKf(this.kafedra.id).subscribe((response) => {
+      if (!response.error) {
+
+        const subjects: Load[] = response.data.slice();
+        subjects.forEach(subject => {
+
+          subject.newId = subject.idExSubject + subject.group;
+          subject.degree = this.auth.DEGREES[+subject.degree];
+          subject.type = this.auth.TYPES.find(o => o.id === +subject.type).name;
+
         });
 
-        this.loadService.getLoadSubjectsByKf(this.kafedra.id).subscribe((response) => {
-          if (!response.error) {
-
-            const subjects: Load[] = response.data.slice();
-            subjects.forEach(subject => {
-
-              subject.newId = subject.idExSubject + subject.group;
-              subject.degree = this.auth.DEGREES[+subject.degree];
-              subject.type = this.auth.TYPES.find(o => o.id === +subject.type).name;
-
-            });
-
-            const distribution = new Distribution(subjects, this.teachers);
-            this.subjects = distribution.getSubjects();
-          }
-        });
+        const distribution = new Distribution(subjects, this.teachers, this.loadService.coefs);
+        this.subjects = distribution.getSubjects();
       }
     });
+  }
+
+  getGroupsAmount(subject: IDistribution): number {
+    const groups = new Set<string>();
+
+    subject.sections.forEach(s => {
+      s.groups.forEach(o => {
+        groups.add(o);
+      });
+    });
+
+    return groups.size;
   }
 
   getKafedrasLoadById(filter: { kf: Kafedra, fc: Faculty }) {
@@ -117,11 +115,24 @@ export class DistributionComponent implements OnInit {
     });
   }
 
-  openCWDistribution(section: ISection) {
-    console.log(section);
-    this.dialog.open(CourseWorksComponent, {
-      width: '500px',
-      data: section
+  openCWDistribution(subject: IDistribution) {
+
+    const idLoadSubject = subject.sections.find(o =>
+      (+o.idSection === 1) || (+o.idSection === 2)).id;
+
+    this.loadService.getCourseWorks(idLoadSubject).subscribe(resp => {
+      if (!resp.error) {
+
+        const args = [subject, this.loadService.teachers, resp.data, this.loadService.coefs];
+
+        // @ts-ignore
+        const courseWorks = new CourseWorks(...args);
+        this.dialog.open(CourseWorksComponent, {
+          width: '700px',
+          data: courseWorks.getSubject()
+        });
+
+      }
     });
   }
 }
