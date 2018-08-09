@@ -52,7 +52,7 @@
         <td class="teacher-column">
           <ng-template [ngIf]="subject.sections[0].idTeacher !== ''">
             <div class="toogle"
-                 matTooltip="{{subject.sections[0].idTeacher}}">
+                 matTooltip="{{ subject.sections[0].idTeacher }}">
               {{ subject.sections[0].idTeacher | teacherName }}
             </div>
             <div style="float: right;">

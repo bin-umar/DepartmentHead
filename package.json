@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4100",
-    "build": "ng build --prod --base-href=/educationdep/ --build-optimizer",
+    "build": "ng build --prod --base-href=/loadkaf/ --build-optimizer",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

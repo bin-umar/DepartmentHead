@@ -62,9 +62,9 @@ export class LoadKafComponent implements OnInit {
     return Array.from(Array(amount).keys());
   }
 
-  getSubjects(term: number, type: number, fcId: number): ILoadKafSubject[] {
+  getSubjects(term: number, typeS: number, fcId: number): ILoadKafSubject[] {
     return this.subjects.filter(o => (
-      o.term === term && +o.type === type && +o.fcId === fcId
+      o.term === term && +o.type === typeS && +o.fcId === fcId
     ));
   }
 
@@ -82,10 +82,10 @@ export class LoadKafComponent implements OnInit {
     return types;
   }
 
-  getFacultiesByTerm(term: number): Faculty[] {
+  getFacultiesByType(typeS: number, term: number): Faculty[] {
     const faculties: Faculty[] = [];
 
-    this.subjects.filter(o => o.term === term)
+    this.subjects.filter(o => (+o.type === typeS) && (+o.term === term))
       .forEach(o => {
         const i = faculties.findIndex(fc => fc.id === +o.fcId);
         if (i === -1) {
@@ -100,13 +100,13 @@ export class LoadKafComponent implements OnInit {
     return faculties;
   }
 
-  sum(prop: string, term?: number, type?: number) {
+  sum(prop: string, term?: number, typeS?: number) {
     let sum = 0;
     let subjects: ILoadKafSubject[];
 
     if (term) {
-      if (type) {
-        subjects = this.subjects.filter(o => +o.type === type && +o.term === term);
+      if (typeS) {
+        subjects = this.subjects.filter(o => +o.type === typeS && +o.term === term);
       } else {
         subjects = this.subjects.filter(o => +o.term === term);
       }

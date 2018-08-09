@@ -139,7 +139,7 @@ export class Distribution {
             });
         }
 
-      } else {
+      } else  {
         this.arrNewIds.add(item.newId);
       }
     });
@@ -158,8 +158,8 @@ export class Distribution {
         sections: []
       };
 
-      this.loadSubjects.filter(o => o.newId === id)
-        .forEach((o, index, array) => {
+      const ldSubject = this.loadSubjects.filter(o => o.newId === id);
+      ldSubject.forEach((o, index, array) => {
 
           if (index === 0) {
             subject.degree = o.degree;
@@ -208,7 +208,9 @@ export class Distribution {
           }
         });
 
-      this.realSubjects.push(subject);
+      if (ldSubject.length !== 0) {
+        this.realSubjects.push(subject);
+      }
     });
   }
 

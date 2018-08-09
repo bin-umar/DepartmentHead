@@ -149,13 +149,13 @@ export class LoadKafReport {
             if (o.exam !== '') {
               if (+o.type === 1) {
                 if (subject.degree === 'бакалавр') {
-                  subject.exam = this.coefs.exam.bachelor * subject.groupsAmount;
+                  subject.exam = this.ToFixed(this.coefs.bachelor.exam * subject.groupsAmount);
                 } else if (subject.degree === 'магистр') {
-                  subject.exam = this.coefs.exam.masters * subject.groupsAmount;
+                  subject.exam = this.ToFixed(this.coefs.master.exam * subject.groupsAmount);
                 }
 
               } else if (+o.type === 2 || +o.type === 25) {
-                subject.exam = this.coefs.exam.distance * subject.groupsAmount;
+                subject.exam = this.ToFixed(this.coefs.distanceExam * subject.studentsAmount);
               }
             }
 
@@ -167,7 +167,7 @@ export class LoadKafReport {
           switch (+o.idSection) {
             case 1: subject.courseWork = this.coefs.courseWork * subject.studentsAmount; break;
             case 2: subject.courseProject = this.coefs.courseProject * subject.studentsAmount; break;
-            case 3: subject.workKont = this.coefs.controlWork * subject.studentsAmount; break;
+            case 3: subject.workKont = this.ToFixed(this.coefs.controlWork * subject.studentsAmount); break;
             case 4: {
               if (o.newId === (o.idExSubject + o.group)) {
                 subject.lecture.plan = o.hour;
@@ -190,12 +190,26 @@ export class LoadKafReport {
               subject.kmro.plan = o.hour;
               subject.kmro.total = +o.hour * subject.groupsAmount;
             } break;
+
             case 9: subject.practices = o.hour; break;
             case 10: subject.practices = o.hour; break;
-            case 11: subject.practices = this.coefs.diplomPrac * subject.studentsAmount; break;
-            case 12: subject.advice = o.hour; break;
+            case 11: {
+              if (subject.degree === 'бакалавр') {
+                subject.practices = this.coefs.bachelor.practice * subject.studentsAmount;
+              } else if (subject.degree === 'магистр') {
+                subject.practices = this.coefs.master.practice * subject.studentsAmount;
+              }
+            } break;
+
+            case 12: subject.advice = this.coefs.advice * subject.groupsAmount; break;
             case 13: subject.gosExam = this.coefs.gosExam * subject.studentsAmount; break;
-            case 14: subject.diploma = this.coefs.graduateWork * subject.studentsAmount; break;
+            case 14: {
+              if (subject.degree === 'бакалавр') {
+                subject.diploma = this.coefs.bachelor.graduateWork * subject.studentsAmount;
+              } else if (subject.degree === 'магистр') {
+                subject.diploma = this.coefs.master.graduateWork * subject.studentsAmount;
+              }
+            } break;
           }
         });
 
@@ -203,6 +217,10 @@ export class LoadKafReport {
       subject.total = this.countTotal(subject);
       this.subjects.push(subject);
     });
+  }
+
+  private ToFixed(value: number): number {
+    return +value.toFixed(1);
   }
 
   private countAuditTotal(subject: ILoadKafSubject): number {

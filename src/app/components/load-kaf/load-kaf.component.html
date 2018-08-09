@@ -113,7 +113,7 @@
           <td colspan="27">НИМСОЛАИ {{ term }} барои гурӯҳҳои {{ type.name }}</td>
         </tr>
 
-        <ng-template ngFor let-fc [ngForOf]="getFacultiesByTerm(term)">
+        <ng-template ngFor let-fc [ngForOf]="getFacultiesByType(+type.id, term)">
           <tr class="bg-aw font-weight-bold">
             <td colspan="27">{{ fc.fullName }}</td>
           </tr>

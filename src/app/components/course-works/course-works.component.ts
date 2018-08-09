@@ -1,7 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
-import { ICourseWorks, ICWServers, ISectionCW} from '../../models/distribution';
+import { ICourseWorks, ICWServers, ISectionCW } from '../../models/distribution';
 import { Teacher } from '../../models/load';
 import { ICoefficient } from '../../models/settings';
 
@@ -15,7 +15,7 @@ import { LoadService } from '../../services/load.service';
   providers: [ LoadService ]
 })
 
-export class CourseWorksComponent implements OnInit {
+export class CourseWorksComponent {
 
   newSection: ISectionCW = {
     id: 0,
@@ -37,10 +37,6 @@ export class CourseWorksComponent implements OnInit {
     this.teachers = this.stService.teachers;
     this.coefs = this.stService.coefs;
     this.sections = this.data.sections.slice();
-  }
-
-  ngOnInit() {
-    console.log(this.data);
   }
 
   setHours() {
