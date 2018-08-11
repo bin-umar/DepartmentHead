@@ -3,7 +3,7 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { LoadKafService } from '../../services/load-kaf.service';
 
-import { DepartmentInfo, Faculty, Kafedra, TypesOfStudying } from '../../models/common';
+import { Department, DepartmentInfo, TypesOfStudying } from '../../models/common';
 import { ILoadKafSubject, LoadKaf, LoadKafReport } from '../../models/load-kaf';
 
 @Component({
@@ -17,17 +17,15 @@ export class LoadKafComponent implements OnInit {
 
   @Output() cmpName: any = 'Сарбории кафедра';
   @Input() depInfo: DepartmentInfo;
-  kafedra: Kafedra = {
+
+  kafedra: Department = {
     id: null,
     shortName: '',
-    fullName: ''
-  };
-  faculty: Faculty = {
-    id: null,
-    shortName: '',
-    fullName: ''
+    fullName: '',
+    chief: ''
   };
 
+  faculty = this.kafedra;
   subjects: ILoadKafSubject[] = [];
 
   constructor(private auth: AuthService,
@@ -35,12 +33,18 @@ export class LoadKafComponent implements OnInit {
 
   ngOnInit() {
     this.kafedra = {
-      id: this.depInfo.kf_id,
-      fullName: this.depInfo.kafedra,
-      shortName: ''
+      id: this.depInfo.kfId,
+      fullName: this.depInfo.kfFullName,
+      shortName: this.depInfo.kfShortName,
+      chief: this.depInfo.kfChief
     };
 
-    this.faculty.fullName = this.depInfo.faculty;
+    this.faculty = {
+      id: this.depInfo.fcId,
+      fullName: this.depInfo.fcFullName,
+      shortName: this.depInfo.fcShortName,
+      chief: this.depInfo.fcChief
+    };
 
     this.lkService.getLoadKafReport(this.kafedra.id).subscribe(resp => {
       if (!resp.error) {
@@ -82,8 +86,8 @@ export class LoadKafComponent implements OnInit {
     return types;
   }
 
-  getFacultiesByType(typeS: number, term: number): Faculty[] {
-    const faculties: Faculty[] = [];
+  getFacultiesByType(typeS: number, term: number): Department[] {
+    const faculties: Department[] = [];
 
     this.subjects.filter(o => (+o.type === typeS) && (+o.term === term))
       .forEach(o => {
@@ -92,7 +96,8 @@ export class LoadKafComponent implements OnInit {
           faculties.push({
             id: +o.fcId,
             shortName: o.fcName,
-            fullName: o.fcName
+            fullName: o.fcName,
+            chief: ''
           });
         }
       });

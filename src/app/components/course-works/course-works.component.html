@@ -90,8 +90,8 @@
             <mat-select placeholder="Омӯзгорро интихоб намоед"
                         [(value)]="newSection.idTeacher"
                         panelClass="custom-select-panel">
-              <mat-option *ngFor="let teacher of teachers" value="{{ teacher.Fio }}">
-                {{ teacher.Fio + ' ' +  teacher.Post  }}
+              <mat-option *ngFor="let teacher of teachers" value="{{ teacher.fio }}">
+                {{ teacher.fio + ' ' +  teacher.position  }}
               </mat-option>
             </mat-select>
           </mat-form-field>

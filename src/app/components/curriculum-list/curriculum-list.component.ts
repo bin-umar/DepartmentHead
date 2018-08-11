@@ -102,7 +102,7 @@ export class CurriculumListComponent implements OnInit {
 
   public loadData() {
     this.curriculumDatabase = new CurriculumService(this.httpClient, this.auth);
-    this.dataSource = new CurriculumDataSource(this.curriculumDatabase, this.paginator, this.sort, this.depInfo.kf_id);
+    this.dataSource = new CurriculumDataSource(this.curriculumDatabase, this.paginator, this.sort, this.depInfo.kfId);
     fromEvent(this.filterInput.nativeElement, 'keyup')
       .pipe(
         debounceTime(150),

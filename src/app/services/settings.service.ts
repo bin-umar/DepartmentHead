@@ -51,11 +51,13 @@ export class SettingsService {
       if (!response.error) {
         this.teachers = response.data.slice();
         this.teachers.unshift({
-          Id: 0,
-          Fio: '',
-          Post: '',
-          UchStep: '',
-          Science_degree: ''
+          id: 0,
+          fio: '',
+          position: '',
+          scienceDegree: '',
+          v1: null,
+          v2: null,
+          v3: null
         });
       }
 

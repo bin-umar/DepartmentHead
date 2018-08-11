@@ -30,7 +30,8 @@ import { LoadKafComponent } from './components/load-kaf/load-kaf.component';
 
 export class AppComponent implements OnDestroy {
   @ViewChild('content', {read: ViewContainerRef})
-  parent: ViewContainerRef;
+      parent: ViewContainerRef;
+
   type: Type<DistributionComponent>;
   cmpRef: ComponentRef<DistributionComponent>;
   depInfo: DepartmentInfo;
@@ -64,9 +65,15 @@ export class AppComponent implements OnDestroy {
         } else {
           this.auth.getUserKafedra().subscribe(resp => {
             if (!resp.error) {
-              this.depInfo = resp.data;
-              this.stService.getLoadCoefficients();
-              this.stService.getTeachersByKf(this.depInfo.kf_id);
+
+              this.auth.getDepartmentInfo(resp.data.id).subscribe(resp2 => {
+                if (!resp2.error) {
+                  this.depInfo = resp2.data;
+                  this.stService.getLoadCoefficients();
+                  this.stService.getTeachersByKf(this.depInfo.kfId);
+                }
+              });
+
               // this.createComponentDynamically(this.distributionCmp);
             }
           });

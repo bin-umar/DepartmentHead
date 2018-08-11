@@ -67,10 +67,11 @@ export interface ILoadKafSubject {
 export class LoadKafReport {
 
   private subjects: ILoadKafSubject[] = [];
-  private arrNewIds = new Set<string>();
+  protected arrNewIds = new Set<string>();
 
-  constructor(private load: LoadKaf[],
-              private coefs: ICoefficient) {
+  constructor(protected load: LoadKaf[],
+              protected coefs: ICoefficient,
+              protected isTeacherLoad?: boolean) {
     load.forEach((item, id, array) => {
 
       if (+item.idGroup > 0) {
@@ -93,7 +94,7 @@ export class LoadKafReport {
     this.combineSubjects();
   }
 
-  private combineSubjects() {
+  protected combineSubjects() {
     this.arrNewIds.forEach(id => {
 
       const subject: ILoadKafSubject = {
@@ -146,29 +147,44 @@ export class LoadKafReport {
             subject.course = o.course;
             subject.term = +o.term - (+o.course - 1) * 2;
 
-            if (o.exam !== '') {
-              if (+o.type === 1) {
-                if (subject.degree === 'бакалавр') {
-                  subject.exam = this.ToFixed(this.coefs.bachelor.exam * subject.groupsAmount);
-                } else if (subject.degree === 'магистр') {
-                  subject.exam = this.ToFixed(this.coefs.master.exam * subject.groupsAmount);
-                }
-
-              } else if (+o.type === 2 || +o.type === 25) {
-                subject.exam = this.ToFixed(this.coefs.distanceExam * subject.studentsAmount);
-              }
-            }
-
             if (o.kmd !== '' && o.subjectName === 'Тарбияи ҷисмонӣ') {
               subject.checkout = this.coefs.checkout * subject.groupsAmount;
             }
           }
 
           switch (+o.idSection) {
-            case 1: subject.courseWork = this.coefs.courseWork * subject.studentsAmount; break;
-            case 2: subject.courseProject = this.coefs.courseProject * subject.studentsAmount; break;
+            case 1: {
+              if (this.isTeacherLoad) {
+                subject.courseWork = this.coefs.courseWork * +o.studentsAmount;
+              } else {
+                subject.courseWork = this.coefs.courseWork * subject.studentsAmount;
+              }
+            } break;
+
+            case 2: {
+              if (this.isTeacherLoad) {
+                subject.courseProject = this.coefs.courseProject * +o.studentsAmount;
+              } else {
+                subject.courseProject = this.coefs.courseProject * subject.studentsAmount;
+              }
+            } break;
+
             case 3: subject.workKont = this.ToFixed(this.coefs.controlWork * subject.studentsAmount); break;
             case 4: {
+
+              if (o.exam !== '') {
+                if (+o.type === 1) {
+                  if (subject.degree === 'бакалавр') {
+                    subject.exam = this.ToFixed(this.coefs.bachelor.exam * subject.groupsAmount);
+                  } else if (subject.degree === 'магистр') {
+                    subject.exam = this.ToFixed(this.coefs.master.exam * subject.groupsAmount);
+                  }
+
+                } else if (+o.type === 2 || +o.type === 25) {
+                  subject.exam = this.ToFixed(this.coefs.distanceExam * subject.studentsAmount);
+                }
+              }
+
               if (o.newId === (o.idExSubject + o.group)) {
                 subject.lecture.plan = o.hour;
                 subject.lecture.total = o.hour;

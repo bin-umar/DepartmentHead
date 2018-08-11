@@ -215,7 +215,7 @@
         </tr>
       </ng-template>
       <tr class="text-total">
-        <td colspan="8">Ҳамагӣ дар нимсолаи {{ term }} барои кафедраи "{{ kafedra.fullName | getName:'tj' }}"</td>
+        <td colspan="8">Ҳамагӣ дар нимсолаи {{ term }} барои кафедраи "{{ kafedra.shortName | getName:'tj' }}"</td>
         <td>
           <span *ngIf="sum('cp', term) !== 0">{{ sum('cp', term) }}</span>
         </td>
@@ -274,7 +274,7 @@
     </ng-template>
 
     <tr class="text-total">
-      <td colspan="8">Ҳамагӣ барои кафедраи "{{ kafedra.fullName | getName:'tj' }}"</td>
+      <td colspan="8">Ҳамагӣ барои кафедраи "{{ kafedra.shortName | getName:'tj' }}"</td>
       <td>
         <span *ngIf="sum('cp') !== 0">{{ sum('cp') }}</span>
       </td>

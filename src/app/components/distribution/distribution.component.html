@@ -72,15 +72,15 @@
           <mat-icon matTooltip="Тақсимоти лоиҳа / кори курсӣ"
                     *ngIf="subject.sections[0].idSection === 1 || subject.sections[0].idSection=== 2"
                     class="md-24"
-                    (click)="openCWDistribution(subject);">view_list</mat-icon>
+                    (click)="openCWDistribution(subject, subject.sections[0].id);">view_list</mat-icon>
 
           <mat-select *ngIf="subject.sections[0].idTeacher === ''
                       && (subject.sections[0].idSection !== 1 && subject.sections[0].idSection !== 2)"
                       [(value)]="subject.sections[0].idTeacher"
                       placeholder="Интихоб намоед"
                       panelClass="custom-select-panel">
-            <mat-option *ngFor="let teacher of teachers" value="{{ teacher.Fio }}">
-              {{ teacher.Fio + ' ' +  teacher.Post  }}
+            <mat-option *ngFor="let teacher of teachers" value="{{ teacher.fio }}">
+              {{ teacher.fio + ' ' +  teacher.position  }}
             </mat-option>
           </mat-select>
         </td>
@@ -117,7 +117,7 @@
               <ng-template [ngIf]="section.idSection === 1 || section.idSection === 2">
                 <mat-icon matTooltip="Тақсимоти лоиҳа / кори курсӣ"
                           class="md-24"
-                          (click)="openCWDistribution(section)">view_list</mat-icon>
+                          (click)="openCWDistribution(subject, section.id)">view_list</mat-icon>
               </ng-template>
 
               <mat-select *ngIf="section.idTeacher === ''
@@ -125,8 +125,8 @@
                           [(value)]="section.idTeacher"
                           placeholder="Интихоб намоед"
                           panelClass="custom-select-panel">
-                <mat-option *ngFor="let teacher of teachers" value="{{ teacher.Fio }}">
-                  {{ teacher.Fio + ' ' +  teacher.Post  }}
+                <mat-option *ngFor="let teacher of teachers" value="{{ teacher.fio }}">
+                  {{ teacher.fio + ' ' +  teacher.position  }}
                 </mat-option>
               </mat-select>
             </td>

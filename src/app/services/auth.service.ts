@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {IAuth, IDepartmentInfo, UserInfo} from '../models/common';
+
+import { IAuth, IDepartmentInfo, ResponseAdd, UserInfo } from '../models/common';
 
 @Injectable()
 export class AuthService {
@@ -71,6 +71,22 @@ export class AuthService {
 
   getUserKafedra() {
     const body = new HttpParams()
+      .set('route', 'authsess')
+      .set('operation', 'one')
+      .set('token', this.token);
+
+    return this.http.post(this.host, body.toString(),
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+      }).pipe(map((response: ResponseAdd) => {
+      return response;
+    }));
+  }
+
+  getDepartmentInfo(kfId: number) {
+    const body = new HttpParams()
+      .set('id', kfId.toString())
       .set('route', 'authsess')
       .set('operation', 'one')
       .set('token', this.token);

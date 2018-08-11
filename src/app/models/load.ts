@@ -22,11 +22,13 @@ export interface ILoad {
 }
 
 export interface Teacher {
-  Id: number;
-  Fio: string;
-  Post: string;
-  UchStep: string;
-  Science_degree: string;
+  id: number;
+  fio: string;
+  position: string;
+  scienceDegree: string;
+  v1: number;
+  v2: number;
+  v3: number;
 }
 
 export interface ITeacher {

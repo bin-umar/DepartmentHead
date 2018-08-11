@@ -26,9 +26,9 @@ export class ExtractionService {
     }));
   }
 
-  getPrintInfo (id: number) {
+  getPrintInfo (idSpec: number) {
     const body = new HttpParams()
-      .set('id', id.toString())
+      .set('id', idSpec.toString())
       .set('route', 'extractions')
       .set('operation', 'custom')
       .set('action', 'printInfo')

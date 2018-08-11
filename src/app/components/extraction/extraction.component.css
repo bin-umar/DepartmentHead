@@ -152,14 +152,14 @@ th div{
   display: inline-block;
 }
 
-.extraction-footer .half-width {
+/deep/ .extraction-footer .half-width {
   width: 49.5%;
   margin-bottom: 15px;
   display: inline-block;
 }
 
-.extraction-footer .half-width>div,
-.extraction-footer .full-width>div{
+/deep/ .extraction-footer .half-width>div,
+/deep/ .extraction-footer .full-width>div{
   display: inline-block;
 }
 
@@ -167,7 +167,7 @@ th div{
   background-color: antiquewhite;
 }
 
-.sign-gap {
+/deep/ .sign-gap {
   margin: 0 7px -27px 7px;
 }
 
@@ -181,7 +181,7 @@ th div{
   }
 
   /deep/ @page {
-    margin: 10px 0;
+    margin: 10px 0 15px 0 ;
   }
 
   table{ margin: 0 0 13px 0;}
@@ -220,4 +220,10 @@ th div{
   .extraction .d-none {
     display: table-cell !important;
   }
+
+  /deep/ table { page-break-after: auto !important; }
+  /deep/ tr { page-break-inside: avoid !important; page-break-after: auto !important; }
+  /deep/ td { page-break-inside: avoid !important; page-break-after: auto !important; }
+  /deep/ thead { display: table-header-group !important; }
+  /deep/ tfoot { display: table-footer-group !important; }
 }

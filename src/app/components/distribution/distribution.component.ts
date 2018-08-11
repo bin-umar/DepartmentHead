@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
-import { DepartmentInfo, Faculty, Kafedra } from '../../models/common';
+import { Department, DepartmentInfo } from '../../models/common';
 import { Load, Teacher} from '../../models/load';
 import { CourseWorks, Distribution, IDistribution} from '../../models/distribution';
 
@@ -22,16 +22,15 @@ export class DistributionComponent implements OnInit {
 
   @Output() cmpName: any = 'Тақсимкунии соатҳои кафедра';
   @Input() depInfo: DepartmentInfo;
-  kafedra: Kafedra = {
+
+  kafedra: Department = {
     id: null,
     shortName: '',
-    fullName: ''
+    fullName: '',
+    chief: ''
   };
-  faculty: Faculty = {
-    id: null,
-    shortName: '',
-    fullName: ''
-  };
+
+  faculty = this.kafedra;
 
   subjects: IDistribution[] = [];
   teachers: Teacher[];
@@ -44,12 +43,18 @@ export class DistributionComponent implements OnInit {
 
   ngOnInit() {
     this.kafedra = {
-      id: this.depInfo.kf_id,
-      fullName: this.depInfo.kafedra,
-      shortName: ''
+      id: +this.depInfo.kfId,
+      fullName: this.depInfo.kfFullName,
+      shortName: this.depInfo.kfShortName,
+      chief: this.depInfo.kfChief
     };
 
-    this.faculty.fullName = this.depInfo.faculty;
+    this.faculty = {
+      id: +this.depInfo.fcId,
+      fullName: this.depInfo.fcFullName,
+      shortName: this.depInfo.fcShortName,
+      chief: this.depInfo.fcChief
+    };
 
     this.loadService.getLoadSubjectsByKf(this.kafedra.id).subscribe((response) => {
       if (!response.error) {
@@ -81,13 +86,13 @@ export class DistributionComponent implements OnInit {
     return groups.size;
   }
 
-  getKafedrasLoadById(filter: { kf: Kafedra, fc: Faculty }) {
+  getKafedrasLoadById(filter: { kf: Department, fc: Department }) {
     this.faculty = filter.fc;
     this.kafedra = filter.kf;
   }
 
   connectTeacherWithSubject(teacher: string, idSubject: number) {
-    const teacherId = this.teachers.find(x => x.Fio === teacher).Id;
+    const teacherId = this.teachers.find(x => x.fio === teacher).id;
 
     this.loadService.saveTeacherId(teacherId, idSubject).subscribe(resp => {
       if (!resp.error) {
@@ -115,15 +120,18 @@ export class DistributionComponent implements OnInit {
     });
   }
 
-  openCWDistribution(subject: IDistribution) {
-
-    const idLoadSubject = subject.sections.find(o =>
-      (+o.idSection === 1) || (+o.idSection === 2)).id;
+  openCWDistribution(subject: IDistribution, idLoadSubject: number) {
 
     this.loadService.getCourseWorks(idLoadSubject).subscribe(resp => {
       if (!resp.error) {
 
-        const args = [subject, this.loadService.teachers, resp.data, this.loadService.coefs];
+        const args = [
+            subject,
+            +idLoadSubject,
+            this.loadService.teachers,
+            resp.data,
+            this.loadService.coefs
+        ];
 
         // @ts-ignore
         const courseWorks = new CourseWorks(...args);

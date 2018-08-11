@@ -4,10 +4,11 @@ import { map } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
 import { SettingsService } from './settings.service';
-import {ILoad, Teacher} from '../models/load';
-import {IFaculty, KafedraRes, ResponseAdd, UpdateResponse} from '../models/common';
+
+import { ILoad, Teacher } from '../models/load';
+import { IDepartment, ResponseAdd, UpdateResponse } from '../models/common';
 import { ICoefficient } from '../models/settings';
-import {ICWServers, ICWServersResp} from '../models/distribution';
+import { ICWServers, ICWServersResp } from '../models/distribution';
 
 @Injectable()
 export class LoadService {
@@ -79,7 +80,7 @@ export class LoadService {
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).pipe(map((response: IFaculty) => {
+      }).pipe(map((response: IDepartment) => {
       return response;
     }));
   }
@@ -95,7 +96,7 @@ export class LoadService {
       {
         headers: new HttpHeaders()
           .set('Content-Type', 'application/x-www-form-urlencoded')
-      }).pipe(map((response: KafedraRes) => {
+      }).pipe(map((response: IDepartment) => {
       return response;
     }));
   }

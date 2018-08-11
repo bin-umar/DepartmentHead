@@ -64,11 +64,12 @@ export class CourseWorks {
   };
 
   constructor(private dbSubject: IDistribution,
+              private idLoadSubject: number,
               private teachers: Teacher[],
               private cwServer: ICWServers[],
               private coefs: ICoefficient) {
 
-    const ndSection = this.getNeededSection(this.dbSubject.sections);
+    const ndSection = this.getNeededSection(this.dbSubject.sections, this.idLoadSubject);
 
     this.subject.id = +ndSection.id;
     this.subject.subjectName = this.dbSubject.subjectName;
@@ -88,7 +89,7 @@ export class CourseWorks {
       if (this.subject.idSection === 1) { hour = +o.studentsAmount * this.coefs.courseWork;
       } else if (this.subject.idSection === 2) { hour = +o.studentsAmount * this.coefs.courseProject; }
 
-      const teacher = this.teachers.find(x => +x.Id === +o.idTeacher).Fio;
+      const teacher = this.teachers.find(x => +x.id === +o.idTeacher).fio;
       this.subject.sections.push({
         id: o.id,
         hour: hour,
@@ -100,8 +101,8 @@ export class CourseWorks {
 
   }
 
-  private getNeededSection(sections: ISection[]) {
-    return sections.find(o => (+o.idSection === 1) || (+o.idSection === 2));
+  private getNeededSection(sections: ISection[], idLoadSubject: number) {
+    return sections.find(o => o.id === idLoadSubject);
   }
 
   public getSubject() {
@@ -169,7 +170,7 @@ export class Distribution {
             subject.subjectName = o.subjectName;
           }
 
-          const teacher = this.teachers.find(x => +x.Id === +o.idTeacher).Fio;
+          const teacher = this.teachers.find(x => +x.id === +o.idTeacher).fio;
           switch (+o.idSection) {
             case 4: {
               if (o.newId === (o.idExSubject + o.group)) {

@@ -37,32 +37,27 @@ export interface UpdateResponse {
   error: boolean;
 }
 
-export interface Faculty {
+export interface Department {
   id: number;
   fullName: string;
   shortName: string;
+  chief: string;
 }
 
-export interface IFaculty {
+export interface IDepartment {
   error: boolean;
-  data: [Faculty];
-}
-
-export interface Kafedra {
-  id: number;
-  shortName: string;
-  fullName: string;
-}
-
-export interface KafedraRes {
-  error: boolean;
-  data: [Kafedra];
+  data: [Department];
 }
 
 export interface DepartmentInfo {
-  kf_id: number;
-  faculty: string;
-  kafedra: string;
+  fcId: number;
+  fcFullName: string;
+  fcShortName: string;
+  fcChief: string;
+  kfId: number;
+  kfFullName: string;
+  kfShortName: string;
+  kfChief: string;
 }
 
 export interface IDepartmentInfo {

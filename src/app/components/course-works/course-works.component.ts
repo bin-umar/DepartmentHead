@@ -93,7 +93,7 @@ export class CourseWorksComponent {
             id: s.id,
             idLdSubject: this.data.id,
             studentsAmount: s.studentsAmount,
-            idTeacher: this.teachers.find(x => x.Fio === s.idTeacher).Id
+            idTeacher: this.teachers.find(x => x.fio === s.idTeacher).id
           };
 
           this.loadService.addCW(subject).subscribe(resp => {
