@@ -95,7 +95,7 @@ export interface PrintInfo {
   kf_short_name: string;
   kf_chief: string;
   itm_chief: string;
-    kfChiefPosition: string;
+  kfChiefPosition: string;
 }
 
 export interface PrintInfoResp {

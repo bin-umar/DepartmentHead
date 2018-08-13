@@ -173,11 +173,11 @@ export class LoadKafReport {
             case 4: {
 
               if (o.exam !== '') {
-                if (+o.type === 1) {
+                if (+o.type === 1 || +o.type === 135) {
                   if (subject.degree === 'бакалавр') {
                     subject.exam = this.ToFixed(this.coefs.bachelor.exam * subject.groupsAmount);
                   } else if (subject.degree === 'магистр') {
-                    subject.exam = this.ToFixed(this.coefs.master.exam * subject.groupsAmount);
+                    subject.exam = this.ToFixed(this.coefs.master.exam * subject.studentsAmount);
                   }
 
                 } else if (+o.type === 2 || +o.type === 25) {
