@@ -50,7 +50,9 @@
         <td>{{ subject.sections[0].hour }}</td>
 
         <td class="teacher-column">
-          <ng-template [ngIf]="subject.sections[0].idTeacher !== ''">
+          <ng-template [ngIf]="subject.sections[0].idTeacher !== ''
+                              && subject.sections[0].idTeacher !== '0'
+                              && subject.sections[0].idTeacher !== '1'">
             <div class="toogle"
                  matTooltip="{{ subject.sections[0].idTeacher }}">
               {{ subject.sections[0].idTeacher | teacherName }}
@@ -69,10 +71,20 @@
             </div>
           </ng-template>
 
-          <mat-icon matTooltip="Тақсимоти лоиҳа / кори курсӣ"
-                    *ngIf="subject.sections[0].idSection === 1 || subject.sections[0].idSection=== 2"
-                    class="md-24"
-                    (click)="openCWDistribution(subject, subject.sections[0].id);">view_list</mat-icon>
+          <ng-template [ngIf]="subject.sections[0].idSection === 1 || subject.sections[0].idSection=== 2">
+            <mat-icon matTooltip="Тақсимоти лоиҳа / кори курсӣ"
+                      class="md-24"
+                      (click)="openCWDistribution(subject, subject.sections[0].id);">view_list</mat-icon>
+
+            <mat-icon *ngIf="+subject.sections[0].idTeacher === 1"
+                      style="color: green;" class="md-24"
+                      matTooltip="Тақсим шудаааст">done</mat-icon>
+
+            <mat-icon *ngIf="+subject.sections[0].idTeacher === 0"
+                      style="color: red;" class="md-24"
+                      matTooltip="Тақсим нашудаааст">remove</mat-icon>
+          </ng-template>
+
 
           <mat-select *ngIf="subject.sections[0].idTeacher === ''
                       && (subject.sections[0].idSection !== 1 && subject.sections[0].idSection !== 2)"
@@ -99,7 +111,7 @@
             <td>{{ section.hour }}</td>
 
             <td class="teacher-column">
-              <ng-template [ngIf]="section.idTeacher !== ''">
+              <ng-template [ngIf]="section.idTeacher !== '' && section.idTeacher !== '0' && section.idTeacher !== '1'">
                 <div class="toogle" matTooltip="{{section.idTeacher}}">{{ section.idTeacher | teacherName }}</div>
                 <div style="float: right;">
                   <mat-icon class="md-18"
@@ -118,6 +130,14 @@
                 <mat-icon matTooltip="Тақсимоти лоиҳа / кори курсӣ"
                           class="md-24"
                           (click)="openCWDistribution(subject, section.id)">view_list</mat-icon>
+
+                <mat-icon *ngIf="+section.idTeacher === 1"
+                          style="color: green;" class="md-24"
+                          matTooltip="Тақсим шудаааст">done</mat-icon>
+
+                <mat-icon *ngIf="+section.idTeacher === 0"
+                          style="color: red;" class="md-24"
+                          matTooltip="Тақсим нашудаааст">remove</mat-icon>
               </ng-template>
 
               <mat-select *ngIf="section.idTeacher === ''

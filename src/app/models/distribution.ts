@@ -89,13 +89,15 @@ export class CourseWorks {
       if (this.subject.idSection === 1) { hour = +o.studentsAmount * this.coefs.courseWork;
       } else if (this.subject.idSection === 2) { hour = +o.studentsAmount * this.coefs.courseProject; }
 
-      const teacher = this.teachers.find(x => +x.id === +o.idTeacher).fio;
+      let teacher = this.teachers.find(x => +x.id === +o.idTeacher);
+      if (teacher === undefined) { teacher = this.teachers[0]; }
+
       this.subject.sections.push({
         id: o.id,
         hour: hour,
         studentsAmount: +o.studentsAmount,
-        idTeacher: teacher,
-        isTeacherSaved: !(teacher === '')
+        idTeacher: teacher.fio,
+        isTeacherSaved: !(teacher.fio === '')
       });
     });
 
@@ -170,26 +172,11 @@ export class Distribution {
             subject.subjectName = o.subjectName;
           }
 
-          const teacher = this.teachers.find(x => +x.id === +o.idTeacher).fio;
+          let teacher = this.teachers.find(x => +x.id === +o.idTeacher);
+          if (teacher === undefined) { teacher = this.teachers[0]; }
+
           switch (+o.idSection) {
-            case 4: {
-              if (o.newId === (o.idExSubject + o.group)) {
-                const groupInfo = this.findGroups(array);
-
-                subject.sections.push({
-                  id: +o.id,
-                  groups: groupInfo.groups,
-                  studentsAmount: groupInfo.studentsAmount,
-                  idSection: +o.idSection,
-                  section: o.section,
-                  hour: +o.hour,
-                  idTeacher: teacher,
-                  isTeacherSaved: !(teacher === '')
-                });
-              }
-            } break;
-            default: {
-
+            case 1: case 2: {
               let hour: number;
               if (+o.idSection === 1) { hour = +o.studentsAmount * this.coefs.courseWork;
               } else if (+o.idSection === 2) { hour = +o.studentsAmount * this.coefs.courseProject;
@@ -201,9 +188,38 @@ export class Distribution {
                 studentsAmount: o.studentsAmount,
                 idSection: +o.idSection,
                 section: o.section,
-                hour: hour,
-                idTeacher: teacher,
-                isTeacherSaved: !(teacher === '')
+                hour: +o.hour,
+                idTeacher: o.idTeacher,
+                isTeacherSaved: null
+              });
+            } break;
+            case 4: {
+              if (o.newId === (o.idExSubject + o.group)) {
+                const groupInfo = this.findGroups(array);
+
+                subject.sections.push({
+                  id: +o.id,
+                  groups: groupInfo.groups,
+                  studentsAmount: groupInfo.studentsAmount,
+                  idSection: +o.idSection,
+                  section: o.section,
+                  hour: +o.hour,
+                  idTeacher: teacher.fio,
+                  isTeacherSaved: !(teacher.fio === '')
+                });
+              }
+            } break;
+            default: {
+
+              subject.sections.push({
+                id: +o.id,
+                groups: Array.of(o.group),
+                studentsAmount: o.studentsAmount,
+                idSection: +o.idSection,
+                section: o.section,
+                hour: +o.hour,
+                idTeacher: teacher.fio,
+                isTeacherSaved: !(teacher.fio === '')
               });
             } break;
           }

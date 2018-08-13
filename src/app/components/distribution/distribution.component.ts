@@ -135,11 +135,17 @@ export class DistributionComponent implements OnInit {
 
         // @ts-ignore
         const courseWorks = new CourseWorks(...args);
-        this.dialog.open(CourseWorksComponent, {
+        const dialogRef = this.dialog.open(CourseWorksComponent, {
           width: '700px',
           data: courseWorks.getSubject()
         });
 
+        dialogRef.afterClosed().subscribe(result => {
+          const section = subject.sections.find(o => o.id === idLoadSubject);
+          if (result !== undefined) {
+            section.idTeacher = result;
+          }
+        });
       }
     });
   }

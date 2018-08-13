@@ -57,6 +57,7 @@ export interface DepartmentInfo {
   kfId: number;
   kfFullName: string;
   kfShortName: string;
+  kfChiefPosition: string;
   kfChief: string;
 }
 

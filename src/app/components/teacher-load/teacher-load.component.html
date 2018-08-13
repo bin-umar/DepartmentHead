@@ -37,7 +37,7 @@
           <i><strong>{{ teacherLoad.kmro }}</strong></i>
         </span>
         <span style="margin-left: 15px;">Ҳамагӣ:
-          <i><strong>{{ teacherLoad.total + teacherLoad.kmro }}</strong></i>
+          <i><strong>{{ +(teacherLoad.total + teacherLoad.kmro).toFixed(2) }}</strong></i>
         </span>
       </h6>
     </div>
@@ -324,7 +324,7 @@
   </div>
 
   <div class="half-width">
-    <div>Мудири кафедраи
+    <div>{{ depInfo.kfChiefPosition + 'и' }}
       <span matTooltip="{{ kafedra.fullName | getName:'tj' }}">
           {{ kafedra.shortName | getName:'tj' }}
         </span>

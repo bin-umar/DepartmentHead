@@ -178,10 +178,18 @@ export class TeacherLoadComponent implements OnInit {
     let v = 0;
 
     if (total !== 0) {
-      switch (teacher.scienceDegree.toLowerCase()) {
+
+      const scienceDegree = teacher.scienceDegree
+                                  .split( ' ')
+                                  .filter(o => o !== '')
+                                  .join('').toLowerCase();
+
+      switch (scienceDegree) {
         case 'надорад': v = +teacher.v1; break;
-        case 'номзади илм': v = +teacher.v2; break;
-        case 'доктори илм': v = +teacher.v3; break;
+        case 'номзадиилм': v = +teacher.v2; break;
+        case 'докториилм': v = +teacher.v3; break;
+        case 'узвивобастаиаиҷт': v = 432; break;
+        case 'академикиаиҷт': v = 360; break;
       }
 
       this.teacherLoad.workRate = +(total / v).toFixed(2);

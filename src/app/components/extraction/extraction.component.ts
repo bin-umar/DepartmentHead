@@ -3,6 +3,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CurriculumList, ExtractionSubject, PrintInfo } from '../../models/curriculum';
 import { AuthService } from '../../services/auth.service';
 import { ExtractionService } from '../../services/extraction.service';
+import {DepartmentInfo} from '../../models/common';
 
 @Component({
   selector: 'app-extraction',
@@ -27,7 +28,8 @@ export class ExtractionComponent implements OnInit {
     kf_full_name: '',
     kf_short_name: '',
     kf_chief: '',
-    itm_chief: ''
+    itm_chief: '',
+    kfChiefPosition: ''
   };
 
   constructor(private extractionService: ExtractionService,

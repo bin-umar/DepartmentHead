@@ -78,7 +78,7 @@ export class CourseWorksComponent {
               if (!resp.error) {
                 this.snackBar.open('Бо муваффақият хориҷ шуд', '', { duration: 1000 });
 
-                if(this.data.sections.length === 0) { this.onNoClick(); }
+                if (this.data.sections.length === 0) { this.onNoClick(0); }
               }
           });
         }
@@ -99,7 +99,7 @@ export class CourseWorksComponent {
           this.loadService.addCW(subject).subscribe(resp => {
             if (!resp.error) {
               this.snackBar.open('Бо муваффақият сабт шуд', '', { duration: 1000 });
-              this.onNoClick();
+              this.onNoClick(1);
             }
           });
         }
@@ -112,6 +112,6 @@ export class CourseWorksComponent {
     }
   }
 
-  onNoClick(): void { this.dialogRef.close(); }
+  onNoClick(arg?: number): void { this.dialogRef.close(arg); }
 
 }
