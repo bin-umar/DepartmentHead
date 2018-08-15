@@ -152,6 +152,10 @@ th div{
   display: inline-block;
 }
 
+.hasError {
+  background-color: #ffeb3b;
+}
+
 /deep/ .extraction-footer .half-width {
   width: 49.5%;
   margin-bottom: 15px;

@@ -117,7 +117,9 @@
           <tr class="bg-aw font-weight-bold">
             <td colspan="27">{{ fc.fullName }}</td>
           </tr>
-          <tr *ngFor="let subject of getSubjects(term, type.id, fc.id); let i = index;">
+          <!--<ng-template></ng-template>-->
+          <tr *ngFor="let subject of getSubjects(term, type.id, fc.id); let i = index;"
+              [class.hasError]="subject.hasError === true">
             <td>{{ i + 1 }}</td>
             <td class="text-left" style="padding-left: 10px;">{{ subject.subjectName }}</td>
             <td>{{ subject.course }}</td>
@@ -331,4 +333,11 @@
       </td>
     </tr>
   </table>
+</div>
+
+<div class="text-center alert alert-info mat-elevation-z8 d-print-none" *ngIf="isError">
+  <h3><strong>Эзоҳ:</strong></h3>
+  <h5>Фаннҳое ки бо ранги зард ҷудо шудаанд селенамоӣ шудаанд вале миқдори соатҳои дарсиашон якхела нестанд,
+  масалан миқдори соатҳои амалӣ, лабараторӣ ё дигарашон баробар нестанд.
+  Аз кормандони шуъбаи таълим хоҳиш намоед, ки иқтибосҳои ин гуруҳҳоро лутфан дида бароянд!!!</ h5>
 </div>

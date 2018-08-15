@@ -62,6 +62,7 @@ export interface ILoadKafSubject {
   total: number;
   fcId: number;
   fcName: string;
+  hasError: boolean;
 }
 
 export class LoadKafReport {
@@ -70,8 +71,7 @@ export class LoadKafReport {
   protected arrNewIds = new Set<string>();
 
   constructor(protected load: LoadKaf[],
-              protected coefs: ICoefficient,
-              protected isTeacherLoad?: boolean) {
+              protected coefs: ICoefficient) {
     load.forEach((item, id, array) => {
 
       if (+item.idGroup > 0) {
@@ -125,7 +125,8 @@ export class LoadKafReport {
         diploma: null,
         total: null,
         fcId: null,
-        fcName: null
+        fcName: null,
+        hasError: false
       };
 
       this.load.filter(o => o.newId === id)
@@ -153,23 +154,11 @@ export class LoadKafReport {
           }
 
           switch (+o.idSection) {
-            case 1: {
-              if (this.isTeacherLoad) {
-                subject.courseWork = this.ToFixed(this.coefs.courseWork * +o.studentsAmount);
-              } else {
-                subject.courseWork = this.ToFixed(this.coefs.courseWork * subject.studentsAmount);
-              }
+            case 1: subject.courseWork += this.ToFixed(this.coefs.courseWork * +o.studentsAmount); break;
+            case 2: subject.courseProject += this.ToFixed(this.coefs.courseProject * +o.studentsAmount); break;
+            case 3: {
+              subject.workKont += this.ToFixed(this.coefs.controlWork * +o.studentsAmount);
             } break;
-
-            case 2: {
-              if (this.isTeacherLoad) {
-                subject.courseProject = this.ToFixed(this.coefs.courseProject * +o.studentsAmount);
-              } else {
-                subject.courseProject = this.ToFixed(this.coefs.courseProject * subject.studentsAmount);
-              }
-            } break;
-
-            case 3: subject.workKont = this.ToFixed(this.coefs.controlWork * subject.studentsAmount); break;
             case 4: {
 
               if (o.exam !== '') {
@@ -186,29 +175,34 @@ export class LoadKafReport {
               }
 
               if (o.newId === (o.idExSubject + o.group)) {
-                subject.lecture.plan = o.hour;
-                subject.lecture.total = o.hour;
+                subject.lecture.plan = +o.hour;
+                subject.lecture.total = +o.hour;
               }
-            } break;
-            case 5: {
-              subject.laboratory.plan = o.hour;
-              subject.laboratory.total = this.ToFixed(+o.hour * subject.subgroups);
-            } break;
-            case 6: {
-              subject.practical.plan = o.hour;
-              subject.practical.total = this.ToFixed(+o.hour * subject.groupsAmount);
-            } break;
-            case 7: {
-              subject.seminar.plan = o.hour;
-              subject.seminar.total = this.ToFixed(+o.hour * subject.groupsAmount);
-            } break;
-            case 8: {
-              subject.kmro.plan = o.hour;
-              subject.kmro.total = this.ToFixed(+o.hour * subject.groupsAmount);
+
             } break;
 
-            case 9: subject.practices = o.hour; break;
-            case 10: subject.practices = o.hour; break;
+            case 5: {
+              subject.laboratory.plan = +o.hour;
+              subject.laboratory.total += this.ToFixed(+o.hour);
+            } break;
+
+            case 6: {
+              subject.practical.plan = +o.hour;
+              subject.practical.total += this.ToFixed(+o.hour);
+            } break;
+
+            case 7: {
+              subject.seminar.plan = +o.hour;
+              subject.seminar.total += this.ToFixed(+o.hour);
+            } break;
+
+            case 8: {
+              subject.kmro.plan = +o.hour;
+              subject.kmro.total += this.ToFixed(+o.hour);
+            } break;
+
+            case 9: subject.practices = +o.hour; break;
+            case 10: subject.practices = +o.hour; break;
             case 11: {
               if (subject.degree === 'бакалавр') {
                 subject.practices = this.ToFixed(this.coefs.bachelor.practice * subject.studentsAmount);
@@ -217,8 +211,8 @@ export class LoadKafReport {
               }
             } break;
 
-            case 12: subject.advice = this.ToFixed(this.coefs.advice * subject.groupsAmount); break;
-            case 13: subject.gosExam = this.ToFixed(this.coefs.gosExam * subject.studentsAmount); break;
+            case 12: subject.advice += this.ToFixed(this.coefs.advice); break;
+            case 13: subject.gosExam += this.ToFixed(this.coefs.gosExam * +o.studentsAmount); break;
             case 14: {
               if (subject.degree === 'бакалавр') {
                 subject.diploma = this.ToFixed(this.coefs.bachelor.graduateWork * subject.studentsAmount);
@@ -231,12 +225,51 @@ export class LoadKafReport {
 
       subject.totalAuditHour = this.countAuditTotal(subject);
       subject.total = this.countTotal(subject);
+      this.hasError(subject);
       this.subjects.push(subject);
     });
   }
 
   private ToFixed(value: number): number {
     return +value.toFixed(1);
+  }
+
+  private hasError(subject: ILoadKafSubject) {
+    const newSubject = JSON.parse(JSON.stringify(subject));
+
+    if (subject.courseWork) {
+      newSubject.courseWork = this.ToFixed(this.coefs.courseWork * subject.studentsAmount);
+    }
+
+    if (subject.courseProject) {
+      newSubject.courseProject = this.ToFixed(this.coefs.courseProject * subject.studentsAmount);
+    }
+
+    if (subject.workKont) {
+      newSubject.workKont = this.ToFixed(this.coefs.controlWork * subject.studentsAmount);
+    }
+
+    if (subject.laboratory.plan) {
+      newSubject.laboratory.total = this.ToFixed(+subject.laboratory.plan * subject.subgroups);
+    }
+
+    if (subject.practical.plan) {
+      newSubject.practical.total = this.ToFixed(+subject.practical.plan * subject.groupsAmount);
+    }
+
+    if (subject.seminar.plan) {
+      newSubject.seminar.total = this.ToFixed(+subject.seminar.plan * subject.groupsAmount);
+    }
+
+    if (subject.kmro.plan) {
+      newSubject.kmro.total = this.ToFixed(+subject.kmro.plan * subject.groupsAmount);
+    }
+
+    if (subject.advice) {
+      newSubject.advice = this.ToFixed(this.coefs.advice * subject.groupsAmount);
+    }
+
+    subject.hasError = !(JSON.stringify(subject) === JSON.stringify(newSubject));
   }
 
   private countAuditTotal(subject: ILoadKafSubject): number {
@@ -274,5 +307,9 @@ export class LoadKafReport {
 
   public getSubjects() {
     return this.subjects;
+  }
+
+  public isErrorSubject(): boolean {
+    return this.subjects.find(o => o.hasError === true) !== undefined;
   }
 }

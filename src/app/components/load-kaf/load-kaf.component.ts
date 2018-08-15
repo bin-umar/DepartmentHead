@@ -27,6 +27,7 @@ export class LoadKafComponent implements OnInit {
 
   faculty = this.kafedra;
   subjects: ILoadKafSubject[] = [];
+  isError = false;
 
   constructor(private auth: AuthService,
               private lkService: LoadKafService) {}
@@ -58,6 +59,7 @@ export class LoadKafComponent implements OnInit {
 
         const loadKafReport = new LoadKafReport(subjects, this.lkService.coefs);
         this.subjects = loadKafReport.getSubjects();
+        this.isError = loadKafReport.isErrorSubject();
       }
     });
   }
