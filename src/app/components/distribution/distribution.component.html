@@ -15,6 +15,7 @@
       <th>Семестр</th>
       <th>Дараҷаи таҳсил</th>
       <th>Шакли таҳсил</th>
+      <th>Факулта</th>
       <th>Гурӯҳ</th>
       <th>
         <mat-icon matTooltip="Шумораи донишҷӯён">group</mat-icon>
@@ -32,6 +33,7 @@
         <td [attr.rowspan]="subject.sections.length">{{ subject.term }}</td>
         <td [attr.rowspan]="subject.sections.length">{{ subject.degree }}</td>
         <td [attr.rowspan]="subject.sections.length">{{ subject.type }}</td>
+        <td [attr.rowspan]="subject.sections.length">{{ subject.fcName }}</td>
 
         <ng-template [ngIf]="getGroupsAmount(subject) === 1">
           <td [attr.rowspan]="subject.sections.length">

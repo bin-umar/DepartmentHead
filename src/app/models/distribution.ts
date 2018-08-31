@@ -114,6 +114,8 @@ export class CourseWorks {
 
 export interface IDistribution {
   subjectName: string;
+  fcId: number;
+  fcName: string;
   term: number;
   course: number;
   degree: string;
@@ -154,6 +156,8 @@ export class Distribution {
     this.arrNewIds.forEach(id => {
       const subject: IDistribution = {
         subjectName: null,
+        fcId: null,
+        fcName: null,
         term: null,
         course: null,
         degree: null,
@@ -170,6 +174,8 @@ export class Distribution {
             subject.course = o.course;
             subject.term = o.term;
             subject.subjectName = o.subjectName;
+            subject.fcId = +o.fcId;
+            subject.fcName = o.fcName;
           }
 
           let teacher = this.teachers.find(x => +x.id === +o.idTeacher);

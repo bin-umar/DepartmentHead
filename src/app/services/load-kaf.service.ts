@@ -7,7 +7,7 @@ import { SettingsService } from './settings.service';
 
 import { ILoadKaf } from '../models/load-kaf';
 import { ICoefficient } from '../models/settings';
-import { Teacher } from '../models/load';;
+import { Teacher } from '../models/load';
 
 @Injectable()
 export class LoadKafService {
@@ -37,9 +37,10 @@ export class LoadKafService {
     }));
   }
 
-  public getTeacherReport(teacher_id: number) {
+  public getTeacherReport(teacher_id: number, kf_id: number) {
     const body = new HttpParams()
       .set('teacher_id', teacher_id.toString())
+      .set('kf_id', kf_id.toString())
       .set('route', 'ldReports')
       .set('operation', 'list')
       .set('token', this.auth.token);
@@ -53,9 +54,10 @@ export class LoadKafService {
     }));
   }
 
-  public getTeacherCourseWorks(teacher_id: number) {
+  public getTeacherCourseWorks(teacher_id: number, kf_id: number) {
     const body = new HttpParams()
       .set('teacher_id', teacher_id.toString())
+      .set('kf_id', kf_id.toString())
       .set('route', 'ldCworks')
       .set('operation', 'list')
       .set('token', this.auth.token);

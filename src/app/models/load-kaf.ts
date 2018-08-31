@@ -11,7 +11,6 @@ export interface LoadKaf {
   course: number;
   group: string;
   subgroup: number;
-  subgroup2: number;
   degree: string;
   type: number;
   studentsAmount: number;
@@ -21,6 +20,7 @@ export interface LoadKaf {
   idGroup: number;
   fcId: number;
   fcName: string;
+  isArch: number;
 }
 
 export interface ILoadKaf {
@@ -62,6 +62,7 @@ export interface ILoadKafSubject {
   total: number;
   fcId: number;
   fcName: string;
+  isArch: number;
   hasError: boolean;
 }
 
@@ -126,6 +127,7 @@ export class LoadKafReport {
         total: null,
         fcId: null,
         fcName: null,
+        isArch: null,
         hasError: false
       };
 
@@ -147,6 +149,7 @@ export class LoadKafReport {
             subject.fcName = o.fcName;
             subject.course = o.course;
             subject.term = +o.term - (+o.course - 1) * 2;
+            subject.isArch = +o.isArch;
 
             if (o.kmd !== '' && o.subjectName === 'Тарбияи ҷисмонӣ') {
               subject.checkout = this.coefs.checkout * subject.groupsAmount;
@@ -189,6 +192,21 @@ export class LoadKafReport {
             case 6: {
               subject.practical.plan = +o.hour;
               subject.practical.total += this.ToFixed(+o.hour);
+
+              if (+o.isArch > 0 && subject.exam === null) {
+                if (o.exam !== '') {
+                  if (+o.type === 1 || +o.type === 135) {
+                    if (subject.degree === 'бакалавр') {
+                      subject.exam = this.ToFixed(this.coefs.bachelor.exam * subject.groupsAmount);
+                    } else if (subject.degree === 'магистр') {
+                      subject.exam = this.ToFixed(this.coefs.master.exam * subject.studentsAmount);
+                    }
+
+                  } else if (+o.type === 2 || +o.type === 25) {
+                    subject.exam = this.ToFixed(this.coefs.distanceExam * subject.studentsAmount);
+                  }
+                }
+              }
             } break;
 
             case 7: {
@@ -254,7 +272,11 @@ export class LoadKafReport {
     }
 
     if (subject.practical.plan) {
-      newSubject.practical.total = this.ToFixed(+subject.practical.plan * subject.groupsAmount);
+      if (subject.isArch === 0) {
+        newSubject.practical.total = this.ToFixed(+subject.practical.plan * subject.groupsAmount);
+      } else {
+        newSubject.practical.total = this.ToFixed(+subject.practical.plan * subject.subgroups);
+      }
     }
 
     if (subject.seminar.plan) {
@@ -269,6 +291,8 @@ export class LoadKafReport {
       newSubject.advice = this.ToFixed(this.coefs.advice * subject.groupsAmount);
     }
 
+    console.log(subject);
+    console.log(newSubject);
     subject.hasError = !(JSON.stringify(subject) === JSON.stringify(newSubject));
   }
 
@@ -292,7 +316,12 @@ export class LoadKafReport {
     subjects.forEach(subject => {
       if (groups.indexOf(subject.group) === -1) {
         groups.push(subject.group);
-        subgroups += +subject.subgroup;
+
+        if (subject.isArch > 0) {
+          subgroups += Math.ceil(+subject.studentsAmount / +subject.isArch);
+        } else {
+          subgroups += +subject.subgroup;
+        }
         studentsAmount += +subject.studentsAmount;
       }
     });

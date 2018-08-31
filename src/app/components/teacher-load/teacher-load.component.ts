@@ -69,10 +69,10 @@ export class TeacherLoadComponent implements OnInit {
   selectTeacher() {
     this.subjects = [];
 
-    this.lkService.getTeacherReport(this.selectedTeacher.id).subscribe(resp => {
+    this.lkService.getTeacherReport(this.selectedTeacher.id, this.kafedra.id).subscribe(resp => {
       if (!resp.error) {
 
-        this.lkService.getTeacherCourseWorks(this.selectedTeacher.id).subscribe(response => {
+        this.lkService.getTeacherCourseWorks(this.selectedTeacher.id, this.kafedra.id).subscribe(response => {
           if (!response.error) {
 
             const subjects: LoadKaf[] = [...resp.data, ...response.data];
