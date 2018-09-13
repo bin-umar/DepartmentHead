@@ -6,6 +6,8 @@ import {
   Type,
   ViewChild,
   ViewContainerRef } from '@angular/core';
+import { Spinkit } from 'ng-http-loader';
+
 import { AuthService } from './services/auth.service';
 import { SettingsService } from './services/settings.service';
 
@@ -31,6 +33,8 @@ import { LoadKafComponent } from './components/load-kaf/load-kaf.component';
 export class AppComponent implements OnDestroy {
   @ViewChild('content', {read: ViewContainerRef})
       parent: ViewContainerRef;
+
+  public spinkit = Spinkit;
 
   type: Type<DistributionComponent>;
   cmpRef: ComponentRef<DistributionComponent>;

@@ -10,6 +10,7 @@ import {
   MatSliderModule, MatSnackBarModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgHttpLoaderModule } from 'ng-http-loader';
 
 import { AuthService } from './services/auth.service';
 import { SettingsService } from './services/settings.service';
@@ -64,7 +65,8 @@ import { TeacherNamePipe } from './pipes/teacher-name.pipe';
     MatCheckboxModule,
     MatTooltipModule,
     MatSliderModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgHttpLoaderModule,
   ],
   entryComponents: [ CourseWorksComponent ],
   providers: [ AuthService, SettingsService ],
