@@ -18,6 +18,8 @@ export class TeacherLoadComponent implements OnInit {
   @Output() cmpName: any = 'Сарбории омӯзгорони кафедра';
   @Input() depInfo: DepartmentInfo;
 
+  today: number = Date.now();
+
   kafedra: Department = {
     id: null,
     shortName: '',
