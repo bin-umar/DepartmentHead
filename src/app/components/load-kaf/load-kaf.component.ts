@@ -51,7 +51,6 @@ export class LoadKafComponent implements OnInit {
       if (!resp.error) {
 
         const subjects: LoadKaf[] = resp.data.slice();
-
         subjects.forEach(subject => {
           subject.newId = subject.idExSubject + subject.group;
           subject.degree = this.auth.DEGREES[+subject.degree];
