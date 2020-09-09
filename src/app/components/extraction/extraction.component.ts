@@ -3,7 +3,13 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CurriculumList, ExtractionSubject, PrintInfo } from '../../models/curriculum';
 import { AuthService } from '../../services/auth.service';
 import { ExtractionService } from '../../services/extraction.service';
-import {DepartmentInfo} from '../../models/common';
+
+const separateIfMoreThanOne = (item, index) => {
+  if (item.length > 1) {
+    return  item.split(',')[index];
+  }
+  return item;
+};
 
 @Component({
   selector: 'app-extraction',
@@ -39,7 +45,6 @@ export class ExtractionComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.extractionService.getPrintInfo(this.Curriculum.idSpec).subscribe(resp => {
       if (!resp.error) {
         this.printInfo = resp.data;
@@ -54,16 +59,10 @@ export class ExtractionComponent implements OnInit {
 
           const credits = item.credits.toString().split(',')[i];
           const term = item.terms.toString().split(',')[i];
-          let exams, kmds, exam, kmd;
-
-          if (item.exam.length > 1) {
-            exams = item.exam.toString().split(',');
-          } else if (item.kmd.length > 1) {
-            kmds = item.kmd.toString().split(',');
-          }
-
-          exam = (exams === undefined ? item.exam : exams[i] );
-          kmd = (kmds === undefined ? item.kmd : kmds[i]);
+          const checkout_b = separateIfMoreThanOne(item.checkout_b, i);
+          const checkout_diff = separateIfMoreThanOne(item.checkout_diff, i);
+          const exam = separateIfMoreThanOne(item.exam, i);
+          let kmd = separateIfMoreThanOne(item.exam, i);
 
           if (exam !== kmd && exam !== '') { kmd = ''; }
 
@@ -79,8 +78,10 @@ export class ExtractionComponent implements OnInit {
             lessonHours: +item.lessonHours,
             kmroCredits: +item.kmroCredits,
             kmroHour: +item.kmroHour,
-            exam: exam,
-            kmd: kmd,
+            exam,
+            kmd,
+            checkout_b,
+            checkout_diff,
             courseProject: +item.courseProject,
             courseWork: +item.courseWork,
             workKont: +item.workKont,
@@ -109,6 +110,10 @@ export class ExtractionComponent implements OnInit {
 
   rowAmount(amount: number): number[] {
     return Array.from(Array(amount).keys());
+  }
+
+  isBntu() {
+    return [1, 9].includes(+this.Curriculum.fcId);
   }
 
   getSubjectsByTerm(semester: number) {
@@ -151,17 +156,26 @@ export class ExtractionComponent implements OnInit {
   }
 
   total(subject: ExtractionSubject): number {
-    const result = +subject.lkTotal + +subject.lkPlan + +subject.smTotal +
-      +subject.smPlan + +subject.lbPlan + +subject.lbTotal +
-      +subject.prPlan + +subject.prTotal + +subject.trainingPrac +
-      +subject.manuPrac + +subject.kmroHour + +subject.advice;
+    subject.total = (
+        +subject.lkTotal +
+        +subject.lkPlan +
+        +subject.smTotal +
+        +subject.smPlan +
+        +subject.lbPlan +
+        +subject.lbTotal +
+        +subject.prPlan +
+        +subject.prTotal +
+        +subject.trainingPrac +
+        +subject.manuPrac +
+        +subject.kmroHour +
+        +subject.checkout_b +
+        +subject.checkout_diff
+    );
 
-    subject.total = result;
-    return result;
+    return subject.total;
   }
 
   print(): void {
     window.print();
   }
-
 }

@@ -66,6 +66,7 @@ export class CurriculumListComponent implements OnInit {
       id: null,
       number: null,
       idSpec: null,
+      fcId: null,
       speciality: null,
       degree: null,
       type: null,
@@ -78,7 +79,9 @@ export class CurriculumListComponent implements OnInit {
   }
 
   openSt(row: CurriculumList) {
-    if (this.cmpRef) { this.cmpRef.destroy(); }
+    if (this.cmpRef) {
+      this.cmpRef.destroy();
+    }
 
     const childComponent = this.componentFactoryResolver.resolveComponentFactory(ExtractionComponent);
     const CmpRef = this.parent.createComponent(childComponent);
@@ -87,6 +90,7 @@ export class CurriculumListComponent implements OnInit {
       id: row.id,
       number: row.number,
       idSpec: row.idSpec,
+      fcId: this.depInfo.fcId,
       speciality: row.speciality,
       degree: row.degree,
       type: row.type,
@@ -106,7 +110,8 @@ export class CurriculumListComponent implements OnInit {
     fromEvent(this.filterInput.nativeElement, 'keyup')
       .pipe(
         debounceTime(150),
-        distinctUntilChanged())
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;

@@ -36,6 +36,7 @@ export class CurriculumService {
             id: item.id,
             number: i + 1,
             idSpec: +item.idSpec,
+            fcId: item.fcId,
             speciality: item.speciality,
             course: item.course,
             degree: this.auth.DEGREES[+item.degree],
