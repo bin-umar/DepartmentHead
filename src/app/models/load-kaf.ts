@@ -107,6 +107,16 @@ export class LoadKafReport {
     return [1, 9].includes(fcId);
   }
 
+  protected setCheckout(subject, checkoutName, checkout) {
+    if (!checkout) {
+      return;
+    }
+
+    if ((subject.haslk && subject.lecture.total) || !subject.haslk) {
+      subject[checkoutName] = checkout;
+    }
+  }
+
   protected combineSubjects() {
     this.arrNewIds.forEach(id => {
 
@@ -146,6 +156,9 @@ export class LoadKafReport {
         hasError: false
       };
 
+      let checkout_b = null;
+      let checkout_diff = null;
+
       this.load.filter(o => o.newId === id)
           .forEach((o, index, array) => {
 
@@ -166,17 +179,14 @@ export class LoadKafReport {
               subject.course = o.course;
               subject.term = +o.term - (+o.course - 1) * 2;
               subject.isArch = +o.isArch;
-
-              if (this.isBntu(+o.fcId) && isExamInThisTerm) {
-                subject.exam = this.ToFixed(this.coefs.examBNTU * subject.studentsAmount);
-              }
+              subject.haslk = +o.haslk;
 
               if (o.checkout_b && o.checkout_b.includes(o.term.toString())) {
-                subject.checkout_b = this.ToFixed(this.coefs.checkoutBNTU * subject.studentsAmount);
+                checkout_b = this.ToFixed(this.coefs.checkoutBNTU * subject.studentsAmount);
               }
 
               if (o.checkout_diff && o.checkout_diff.includes(o.term.toString())) {
-                subject.checkout_diff = this.ToFixed(this.coefs.checkoutDiffBNTU * subject.studentsAmount);
+                checkout_diff = this.ToFixed(this.coefs.checkoutDiffBNTU * subject.studentsAmount);
               }
 
               if (o.kmd !== '' && o.subjectName === 'Тарбияи ҷисмонӣ') {
@@ -191,6 +201,9 @@ export class LoadKafReport {
                 subject.workKont += this.ToFixed(this.coefs.controlWork * +o.studentsAmount);
               } break;
               case 4: {
+                if (this.isBntu(+o.fcId) && isExamInThisTerm) {
+                  subject.exam = this.ToFixed(this.coefs.examBNTU * subject.studentsAmount);
+                }
 
                 if (subject.exam === null && isExamInThisTerm) {
                   if (+o.type === 1 || +o.type === 135) {
@@ -222,6 +235,11 @@ export class LoadKafReport {
                 subject.practical.total += this.ToFixed(+o.hour);
 
                 if (+o.haslk === 0 && +o.isArch > 0 && subject.exam === null && isExamInThisTerm) {
+                  if (this.isBntu(+o.fcId)) {
+                    subject.exam = this.ToFixed(this.coefs.examBNTU * subject.studentsAmount);
+                    return;
+                  }
+
                   if (+o.type === 1 || +o.type === 135) {
                     if (subject.degree === 'бакалавр') {
                       if (subject.lecture.plan || !this.isTeacher) {
@@ -271,6 +289,8 @@ export class LoadKafReport {
             }
           });
 
+      this.setCheckout(subject, 'checkout_b', checkout_b);
+      this.setCheckout(subject, 'checkout_diff', checkout_diff);
       subject.totalAuditHour = this.countAuditTotal(subject);
       subject.total = this.countTotal(subject);
       this.hasError(subject);
