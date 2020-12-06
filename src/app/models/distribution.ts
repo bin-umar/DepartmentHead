@@ -8,6 +8,7 @@ export interface ISection {
   idSection: number;
   section: string;
   hour: number;
+  isHourly: number;
   idTeacher: string;
   isTeacherSaved: boolean;
 }
@@ -195,6 +196,7 @@ export class Distribution {
                 idSection: +o.idSection,
                 section: o.section,
                 hour: +o.hour,
+                isHourly: +o.isHourly,
                 idTeacher: o.idTeacher,
                 isTeacherSaved: null
               });
@@ -210,6 +212,7 @@ export class Distribution {
                   idSection: +o.idSection,
                   section: o.section,
                   hour: +o.hour,
+                  isHourly: +o.isHourly,
                   idTeacher: teacher.fio,
                   isTeacherSaved: !(teacher.fio === '')
                 });
@@ -224,6 +227,7 @@ export class Distribution {
                 idSection: +o.idSection,
                 section: o.section,
                 hour: +o.hour,
+                isHourly: +o.isHourly,
                 idTeacher: teacher.fio,
                 isTeacherSaved: !(teacher.fio === '')
               });

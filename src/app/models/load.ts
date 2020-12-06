@@ -14,6 +14,7 @@ export interface Load {
   idSection: number;
   section: string;
   hour: number;
+  isHourly: number;
   idGroup: number;
   idTeacher: string;
 }
