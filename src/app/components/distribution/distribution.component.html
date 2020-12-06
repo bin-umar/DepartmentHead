@@ -54,6 +54,7 @@
         <td>
           <mat-slide-toggle
                   [color]="'primary'"
+                  (change)="setHourly($event.checked, +subject.sections[0].id)"
                   [checked]="!!subject.sections[0].isHourly">
           </mat-slide-toggle>
         </td>
@@ -121,6 +122,7 @@
             <td>
               <mat-slide-toggle
                       [color]="'primary'"
+                      (change)="setHourly($event.checked, +section.id)"
                       [checked]="!!section.isHourly">
               </mat-slide-toggle>
             </td>

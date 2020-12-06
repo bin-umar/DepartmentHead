@@ -37,6 +37,23 @@ export class LoadService {
     }));
   }
 
+  updateHourly (isHourly: number, idSubject: number) {
+    const body = new HttpParams()
+        .set('idSubject', idSubject.toString())
+        .set('isHourly', isHourly.toString())
+        .set('route', 'ldSubjects')
+        .set('operation', 'update')
+        .set('token', this.auth.token);
+
+    return this.auth.http.post(this.auth.host, body.toString(),
+        {
+          headers: new HttpHeaders()
+              .set('Content-Type', 'application/x-www-form-urlencoded')
+        }).pipe(map((response: UpdateResponse) => {
+      return response;
+    }));
+  }
+
   saveTeacherId (idTeacher: number, idSubject: number) {
     const body = new HttpParams()
       .set('idTeacher', idTeacher.toString())
