@@ -37,6 +37,23 @@ export class LoadKafService {
     }));
   }
 
+  public getTeacherReportOnlyHourly(teacher_id: number) {
+    const body = new HttpParams()
+        .set('teacher_id', teacher_id.toString())
+        .set('onlyHourly', '1')
+        .set('route', 'ldReports')
+        .set('operation', 'list')
+        .set('token', this.auth.token);
+
+    return this.auth.http.post(this.auth.host, body.toString(),
+        {
+          headers: new HttpHeaders()
+              .set('Content-Type', 'application/x-www-form-urlencoded')
+        }).pipe(map((response: ILoadKaf) => {
+      return response;
+    }));
+  }
+
   public getTeacherReport(teacher_id: number, kf_id: number) {
     const body = new HttpParams()
       .set('teacher_id', teacher_id.toString())

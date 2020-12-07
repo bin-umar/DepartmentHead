@@ -12,6 +12,8 @@
       <mat-slide-toggle
               matTooltip="Танҳо соатбайъ"
               [color]="'primary'"
+              [disabled]="!selectedTeacher.id"
+              (change)="selectTeacherOnlyHourly($event.checked)"
               [checked]="false">
       </mat-slide-toggle>
     </span>

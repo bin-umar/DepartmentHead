@@ -68,6 +68,30 @@ export class TeacherLoadComponent implements OnInit {
     };
   }
 
+  selectTeacherOnlyHourly(checked: boolean) {
+    this.subjects = [];
+
+    if (!checked) {
+      this.selectTeacher();
+      return;
+    }
+
+    this.lkService.getTeacherReportOnlyHourly(this.selectedTeacher.id).subscribe(resp => {
+      if (!resp.error) {
+        const subjects: LoadKaf[] = [...resp.data];
+
+        subjects.forEach(subject => {
+          subject.newId = subject.idExSubject + subject.group;
+          subject.degree = this.auth.DEGREES[+subject.degree];
+        });
+
+        const teacherLoad = new LoadKafReport(subjects, this.lkService.coefs, true);
+        this.subjects = teacherLoad.getSubjects();
+        this.countTeacherLoad();
+      }
+    });
+  }
+
   selectTeacher() {
     this.subjects = [];
 
