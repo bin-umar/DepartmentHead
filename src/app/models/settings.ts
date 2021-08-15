@@ -25,6 +25,9 @@ export class ICoefficient {
   controlWork: number;
   gosExam: number;
   checkout: number;
+  checkoutBNTU: number;
+  checkoutDiffBNTU: number;
+  examBNTU: number;
   advice: number;
 
   constructor(settings: Settings[]) {
@@ -45,6 +48,9 @@ export class ICoefficient {
         case 'distanceExam': this.distanceExam = +o.value; break;
         case 'gosExam': this.gosExam = +o.value; break;
         case 'checkout': this.checkout = +o.value; break;
+        case 'checkoutBNTU': this.checkoutBNTU = +o.value; break;
+        case 'checkoutDiffBNTU': this.checkoutDiffBNTU = +o.value; break;
+        case 'examBNTU': this.examBNTU = +o.value; break;
         case 'advice': this.advice = +o.value; break;
       }
     });

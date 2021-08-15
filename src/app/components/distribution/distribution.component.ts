@@ -91,6 +91,10 @@ export class DistributionComponent implements OnInit {
     this.kafedra = filter.kf;
   }
 
+  setHourly(checked: boolean, idSubject: number) {
+    this.loadService.updateHourly(+checked, idSubject).subscribe();
+  }
+
   connectTeacherWithSubject(teacher: string, idSubject: number) {
     const teacherId = this.teachers.find(x => x.fio === teacher).id;
 

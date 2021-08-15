@@ -2,7 +2,7 @@
   <div class="text-center">
     <h3>Тақсимкунии соатҳо</h3>
     <h6>
-      барои кафедраи "{{ kafedra.fullName | getName:'tj' }}" - и "{{ faculty.fullName }}"
+      барои кафедраи "{{ kafedra.fullName | getName:'tj' }}"-и "{{ faculty.fullName }}"
     </h6>
   </div>
 </mat-card>
@@ -22,6 +22,7 @@
       </th>
       <th>Намуд</th>
       <th>Соат</th>
+      <th>Соатбайъ</th>
       <th>Омӯзгор</th>
     </tr>
     <ng-template ngFor let-subject let-i="index" [ngForOf]="subjects">
@@ -50,6 +51,13 @@
         </ng-template>
         <td>{{ subject.sections[0].section }}</td>
         <td>{{ subject.sections[0].hour }}</td>
+        <td>
+          <mat-slide-toggle
+                  [color]="'primary'"
+                  (change)="setHourly($event.checked, +subject.sections[0].id)"
+                  [checked]="!!subject.sections[0].isHourly">
+          </mat-slide-toggle>
+        </td>
 
         <td class="teacher-column">
           <ng-template [ngIf]="subject.sections[0].idTeacher !== ''
@@ -111,6 +119,13 @@
             </ng-template>
             <td>{{ section.section }}</td>
             <td>{{ section.hour }}</td>
+            <td>
+              <mat-slide-toggle
+                      [color]="'primary'"
+                      (change)="setHourly($event.checked, +section.id)"
+                      [checked]="!!section.isHourly">
+              </mat-slide-toggle>
+            </td>
 
             <td class="teacher-column">
               <ng-template [ngIf]="section.idTeacher !== '' && section.idTeacher !== '0' && section.idTeacher !== '1'">
@@ -135,11 +150,11 @@
 
                 <mat-icon *ngIf="+section.idTeacher === 1"
                           style="color: green;" class="md-24"
-                          matTooltip="Тақсим шудаааст">done</mat-icon>
+                          matTooltip="Тақсим шудааст">done</mat-icon>
 
                 <mat-icon *ngIf="+section.idTeacher === 0"
                           style="color: red;" class="md-24"
-                          matTooltip="Тақсим нашудаааст">remove</mat-icon>
+                          matTooltip="Тақсим нашудааст">remove</mat-icon>
               </ng-template>
 
               <mat-select *ngIf="section.idTeacher === ''

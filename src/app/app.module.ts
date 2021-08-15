@@ -7,7 +7,7 @@ import {
   MatFormFieldModule, MatIconModule, MatSelectModule, MatDatepickerModule,
   MatNativeDateModule, MatAutocompleteModule, MatCardModule, MatExpansionModule,
   MatButtonModule, MatDialogModule, MatCheckboxModule, MatTooltipModule,
-  MatSliderModule, MatSnackBarModule
+  MatSliderModule, MatSnackBarModule, MatSlideToggleModule,
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgHttpLoaderModule } from 'ng-http-loader';
@@ -67,6 +67,7 @@ import { TeacherNamePipe } from './pipes/teacher-name.pipe';
     MatSliderModule,
     MatSnackBarModule,
     NgHttpLoaderModule,
+    MatSlideToggleModule,
   ],
   entryComponents: [ CourseWorksComponent ],
   providers: [ AuthService, SettingsService ],

@@ -2,24 +2,11 @@
  * Curriculum interfaces
  */
 
-export interface ICurriculum {
-  id: number;
-  number: number;
-  subjectName: string;
-  credits: number;
-  creditsAudit: number;
-  lessonsHours: number;
-  course: number;
-  exam: number;
-  kmd: number;
-  courseProject: number;
-  courseWork: number;
-}
-
 export interface CurriculumList {
   id: number;
   number: number;
   idSpec: number;
+  fcId: number;
   speciality: string;
   course: number;
   degree: string;
@@ -49,6 +36,8 @@ export interface ExtractionSubject {
   kmroHour: number;
   exam: string;
   kmd: string;
+  checkout_b: string;
+  checkout_diff: string;
   courseProject: number;
   courseWork: number;
   workKont: number;
@@ -74,17 +63,6 @@ export interface ExtractionSubject {
 export interface ResponseExtractionSubject {
   error: boolean;
   data: [ExtractionSubject];
-}
-
-export interface Kafedra {
-  id: number;
-  shortName: string;
-  fullName: string;
-}
-
-export interface KafedraRes {
-  error: boolean;
-  data: [Kafedra];
 }
 
 export interface PrintInfo {

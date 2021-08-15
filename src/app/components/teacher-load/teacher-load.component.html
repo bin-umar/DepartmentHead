@@ -8,6 +8,15 @@
       </mat-option>
     </mat-select>
   </div>
+  <span class="isHourly">
+      <mat-slide-toggle
+              matTooltip="Танҳо соатбайъ"
+              [color]="'primary'"
+              [disabled]="!selectedTeacher.id"
+              (change)="selectTeacherOnlyHourly($event.checked)"
+              [checked]="false">
+      </mat-slide-toggle>
+    </span>
   <div>
     <span class="print">
       <mat-icon matTooltip="Чоп намудан"
@@ -22,7 +31,7 @@
     <div class="full-width text-center">
       <h3>Донишгоҳи техникии Тоҷикистон</h3>
       <h6>ба номи академик М.С.Осимӣ</h6>
-      <h6>банақшагирии миқдори соатҳои таълимӣ барои соли таҳсили 2019/20</h6>
+      <h6>банақшагирии миқдори соатҳои таълимӣ барои соли таҳсили 2020/21</h6>
     </div>
 
     <div style="width: 45%; margin-left: 4.7%; display: inline-block">
@@ -102,7 +111,13 @@
         <div>Имтиҳон</div>
       </th>
       <th rowspan="2">
+        <div>Санҷиши Тҷ</div>
+      </th>
+      <th rowspan="2">
         <div>Санҷиш</div>
+      </th>
+      <th rowspan="2">
+        <div>Санҷиши дифф</div>
       </th>
       <th rowspan="2">
         <div>Машварат</div>
@@ -147,18 +162,18 @@
       </th>
     </tr>
     <tr>
-      <th *ngFor="let i of rowAmount(27)">{{ i + 1 }}</th>
+      <th *ngFor="let i of rowAmount(29)">{{ i + 1 }}</th>
     </tr>
 
     <ng-template ngFor let-term [ngForOf]="[1, 2]">
       <ng-template ngFor let-type [ngForOf]="getTypesByTerm(term)">
         <tr class="bg-eee font-weight-bold">
-          <td colspan="27">НИМСОЛАИ {{ term }} барои гурӯҳҳои {{ type.name }}</td>
+          <td colspan="29">НИМСОЛАИ {{ term }} барои гурӯҳҳои {{ type.name }}</td>
         </tr>
 
         <ng-template ngFor let-fc [ngForOf]="getFacultiesByType(+type.id, term)">
           <tr class="bg-aw font-weight-bold">
-            <td colspan="27">{{ fc.fullName }}</td>
+            <td colspan="29">{{ fc.fullName }}</td>
           </tr>
           <tr *ngFor="let subject of getSubjects(term, type.id, fc.id); let i = index;">
             <td>{{ i + 1 }}</td>
@@ -189,6 +204,8 @@
             </td>
             <td>{{ subject.exam }}</td>
             <td>{{ subject.checkout }}</td>
+            <td>{{ subject.checkout_b }}</td>
+            <td>{{ subject.checkout_diff }}</td>
             <td>{{ subject.advice }}</td>
             <td>{{ subject.practices }}</td>
             <td>
@@ -236,6 +253,12 @@
         </td>
         <td>
           <span *ngIf="sum('checkout', term) !== 0">{{ sum('checkout', term) }}</span>
+        </td>
+        <td>
+          <span *ngIf="sum('checkout_b', term) !== 0">{{ sum('checkout_b', term) }}</span>
+        </td>
+        <td>
+          <span *ngIf="sum('checkout_diff', term) !== 0">{{ sum('checkout_diff', term) }}</span>
         </td>
         <td>
           <span *ngIf="sum('advice', term) !== 0">{{ sum('advice', term) }}</span>
@@ -288,6 +311,12 @@
       </td>
       <td>
         <span *ngIf="sum('checkout') !== 0">{{ sum('checkout') }}</span>
+      </td>
+      <td>
+        <span *ngIf="sum('checkout_b') !== 0">{{ sum('checkout_b') }}</span>
+      </td>
+      <td>
+        <span *ngIf="sum('checkout_diff') !== 0">{{ sum('checkout_diff') }}</span>
       </td>
       <td>
         <span *ngIf="sum('advice') !== 0">{{ sum('advice') }}</span>

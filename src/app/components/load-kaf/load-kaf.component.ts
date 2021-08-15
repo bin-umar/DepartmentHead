@@ -138,6 +138,8 @@ export class LoadKafComponent implements OnInit {
         case 'exam': sum += +item.exam; break;
         case 'tAH': sum += +item.totalAuditHour; break;
         case 'checkout': sum += +item.checkout; break;
+        case 'checkout_b': sum += +item.checkout_b; break;
+        case 'checkout_diff': sum += +item.checkout_diff; break;
       }
     });
 
